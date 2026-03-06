@@ -394,13 +394,20 @@ pre {
   border-bottom: 0;
 }
 
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
 .model-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0;
   align-items: center;
+  flex: 1;
   padding-left: 6px;
-  border-bottom: 1px solid var(--border);
 }
 
 .model-tab {
@@ -487,6 +494,67 @@ pre {
 .compare-panel__body {
   padding: 20px;
   min-width: 0;
+}
+
+.compare-panel__label {
+  display: none;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.workspace-grid--compare-all {
+  align-items: stretch;
+  column-gap: 14px;
+}
+
+.workspace-grid--compare-all .compare-panel {
+  display: flex;
+  min-height: calc(100vh - 210px);
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #fff;
+}
+
+.workspace-grid--compare-all .compare-panel__label {
+  display: block;
+}
+
+.workspace-grid--compare-all .compare-panel__body {
+  flex: 1;
+  overflow: auto;
+  scrollbar-gutter: stable;
+}
+
+.workspace-grid--compare-all .compare-panel__body--html {
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace-grid--compare-all .preview-frame {
+  min-height: calc(100vh - 320px);
+}
+
+.compare-toggle {
+  min-height: 40px;
+  margin: 0 0 -1px auto;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.compare-toggle:hover {
+  background: rgba(255, 255, 255, 0.48);
+  color: var(--text);
 }
 
 .ghost-link {
@@ -661,6 +729,13 @@ pre {
 .overview-grid {
   display: grid;
   gap: 16px;
+}
+
+.overview-intro-image {
+  display: block;
+  width: min(100%, 600px);
+  max-width: 600px;
+  margin: 0 0 14px;
 }
 
 .guide-grid {
@@ -875,6 +950,18 @@ pre {
   .workspace-grid[data-columns="3"] {
     grid-template-columns: 1fr;
   }
+
+  .workspace-grid--compare-all .compare-panel {
+    min-height: auto;
+  }
+
+  .workspace-grid--compare-all .compare-panel__body {
+    overflow: visible;
+  }
+
+  .workspace-grid--compare-all .preview-frame {
+    min-height: 560px;
+  }
 }
 
 @media (max-width: 960px) {
@@ -906,9 +993,14 @@ pre {
   }
 
   .topbar,
+  .controls-row,
   .content-section__header,
   .overview-item__header {
     flex-direction: column;
+  }
+
+  .compare-toggle {
+    margin-left: 0;
   }
 
   .preview-frame {

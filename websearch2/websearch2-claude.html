@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tier-1 인포테인먼트 / 디지털 콕핏 / HMI 전략 리서치 2025-2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --primary: #0f172a;
+    --accent: #3b82f6;
+    --accent2: #8b5cf6;
+    --accent3: #06b6d4;
+    --accent4: #f59e0b;
+    --accent5: #ef4444;
+    --accent6: #10b981;
+    --light: #f8fafc;
+    --card-bg: rgba(255,255,255,0.06);
+    --card-border: rgba(255,255,255,0.1);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--primary);
+    color: #e2e8f0;
+    overflow-x: hidden;
+  }
+
+  /* ── Navigation ── */
+  .nav-bar {
+    position: fixed; top:0; left:0; width:100%; z-index:1000;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 32px;
+    background: rgba(15,23,42,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .nav-bar .logo { font-weight:900; font-size:1rem; color:#fff; letter-spacing:-0.5px; }
+  .nav-bar .logo span { color: var(--accent); }
+  .nav-dots { display:flex; gap:6px; }
+  .nav-dots .dot {
+    width:10px; height:10px; border-radius:50%;
+    background: rgba(255,255,255,0.15); cursor:pointer;
+    transition: all .3s;
+  }
+  .nav-dots .dot.active { background: var(--accent); transform: scale(1.3); }
+  .nav-arrows { display:flex; gap:8px; }
+  .nav-arrows button {
+    width:36px; height:36px; border-radius:50%;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color:#fff; font-size:1.1rem;
+    cursor:pointer; transition: all .3s;
+  }
+  .nav-arrows button:hover { background: var(--accent); border-color: var(--accent); }
+
+  /* ── Slide Container ── */
+  .slides-wrapper {
+    width: 100%; height: 100vh;
+    overflow: hidden; position: relative;
+    margin-top: 0;
+  }
+  .slide {
+    width:100%; height:100vh;
+    display:none; flex-direction:column;
+    justify-content:center; align-items:center;
+    padding: 80px 48px 48px;
+    position: relative;
+    animation: fadeSlide .6s ease;
+  }
+  .slide.active { display:flex; }
+
+  @keyframes fadeSlide {
+    from { opacity:0; transform:translateY(30px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* ── Cover Slide ── */
+  .cover { text-align:center; }
+  .cover .tag {
+    display:inline-block; padding:6px 18px; border-radius:20px;
+    background: rgba(59,130,246,0.15); color: var(--accent);
+    font-size:.8rem; font-weight:500; margin-bottom:20px;
+    border: 1px solid rgba(59,130,246,0.3);
+  }
+  .cover h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight:900; color:#fff; line-height:1.3;
+    margin-bottom:16px; letter-spacing:-1px;
+  }
+  .cover h1 .highlight { 
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  }
+  .cover .sub { font-size:1.1rem; color:#94a3b8; max-width:700px; margin:0 auto 30px; line-height:1.7; }
+  .cover .meta { font-size:.85rem; color:#64748b; }
+
+  /* ── Content Slides ── */
+  .slide-inner { max-width:1200px; width:100%; }
+  .slide-header {
+    display:flex; align-items:center; gap:14px;
+    margin-bottom:32px;
+  }
+  .slide-num {
+    width:44px; height:44px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:900; font-size:1.1rem; color:#fff; flex-shrink:0;
+  }
+  .slide-header h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    font-weight:800; color:#fff; letter-spacing:-.5px;
+  }
+  .slide-header .subtitle {
+    font-size:.9rem; color:#94a3b8; margin-top:2px;
+  }
+
+  /* ── Cards Grid ── */
+  .cards { display:grid; gap:18px; }
+  .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  .cards.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .cards.cols-4 { grid-template-columns: repeat(4, 1fr); }
+  .cards.cols-7 { grid-template-columns: repeat(7, 1fr); }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: all .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(59,130,246,0.3);
+    background: rgba(255,255,255,0.09);
+  }
+  .card .icon {
+    width:42px; height:42px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem; margin-bottom:14px; flex-shrink:0;
+  }
+  .card h3 { font-size:1rem; font-weight:700; color:#fff; margin-bottom:8px; }
+  .card p { font-size:.82rem; color:#94a3b8; line-height:1.65; }
+  .card .badge {
+    display:inline-block; padding:3px 10px; border-radius:6px;
+    font-size:.7rem; font-weight:600; margin-bottom:10px;
+  }
+
+  /* Company cards */
+  .company-card { text-align:center; padding:20px 12px; }
+  .company-card .logo-circle {
+    width:56px; height:56px; border-radius:50%;
+    margin:0 auto 12px; display:flex;
+    align-items:center; justify-content:center;
+    font-weight:900; font-size:.75rem; color:#fff;
+  }
+  .company-card h3 { font-size:.88rem; }
+  .company-card p { font-size:.72rem; }
+
+  /* Timeline */
+  .timeline-row { display:flex; gap:16px; align-items:stretch; }
+  .timeline-item {
+    flex:1; background: var(--card-bg); border:1px solid var(--card-border);
+    border-radius:14px; padding:20px; position:relative;
+  }
+  .timeline-item::before {
+    content:''; position:absolute; top:50%; right:-16px;
+    width:16px; height:2px; background: rgba(255,255,255,0.1);
+  }
+  .timeline-item:last-child::before { display:none; }
+  .timeline-item .year {
+    font-size:.75rem; font-weight:700; padding:3px 10px;
+    border-radius:6px; display:inline-block; margin-bottom:10px;
+  }
+
+  /* KPI strip */
+  .kpi-strip { display:flex; gap:16px; margin-bottom:24px; }
+  .kpi-box {
+    flex:1; text-align:center; padding:18px;
+    background: var(--card-bg); border:1px solid var(--card-border);
+    border-radius:14px;
+  }
+  .kpi-box .num {
+    font-size:1.8rem; font-weight:900; margin-bottom:4px;
+  }
+  .kpi-box .label { font-size:.78rem; color:#94a3b8; }
+
+  /* Table */
+  .comp-table {
+    width:100%; border-collapse:collapse;
+    background: var(--card-bg); border-radius:14px;
+    overflow:hidden; border:1px solid var(--card-border);
+  }
+  .comp-table th {
+    padding:14px 16px; font-size:.78rem; font-weight:700;
+    text-align:left; background: rgba(255,255,255,0.05);
+    color: var(--accent); border-bottom:1px solid var(--card-border);
+  }
+  .comp-table td {
+    padding:12px 16px; font-size:.78rem; color:#cbd5e1;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    vertical-align:top;
+  }
+  .comp-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+  /* Bullet list */
+  .bullet-list { list-style:none; }
+  .bullet-list li {
+    padding:6px 0 6px 20px; position:relative;
+    font-size:.82rem; color:#cbd5e1; line-height:1.6;
+  }
+  .bullet-list li::before {
+    content:'▸'; position:absolute; left:0;
+    color: var(--accent); font-weight:700;
+  }
+
+  /* Color utilities */
+  .bg-blue { background: rgba(59,130,246,0.15); }
+  .bg-purple { background: rgba(139,92,246,0.15); }
+  .bg-cyan { background: rgba(6,182,212,0.15); }
+  .bg-amber { background: rgba(245,158,11,0.15); }
+  .bg-red { background: rgba(239,68,68,0.15); }
+  .bg-green { background: rgba(16,185,129,0.15); }
+  .bg-pink { background: rgba(236,72,153,0.15); }
+  .text-blue { color: var(--accent); }
+  .text-purple { color: var(--accent2); }
+  .text-cyan { color: var(--accent3); }
+  .text-amber { color: var(--accent4); }
+  .text-red { color: var(--accent5); }
+  .text-green { color: var(--accent6); }
+
+  .border-left { border-left: 3px solid; padding-left:16px; }
+  .bl-blue { border-color: var(--accent); }
+  .bl-purple { border-color: var(--accent2); }
+  .bl-cyan { border-color: var(--accent3); }
+  .bl-amber { border-color: var(--accent4); }
+
+  .footnote {
+    position:absolute; bottom:24px; left:48px; right:48px;
+    font-size:.7rem; color:#475569;
+    border-top:1px solid rgba(255,255,255,0.06);
+    padding-top:10px;
+  }
+
+  /* Responsive */
+  @media (max-width:900px) {
+    .cards.cols-3, .cards.cols-4, .cards.cols-7 { grid-template-columns: repeat(2,1fr); }
+    .kpi-strip { flex-wrap:wrap; }
+    .timeline-row { flex-direction:column; }
+    .slide { padding:80px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav-bar">
+  <div class="logo">TIER-1 <span>Cockpit</span> Intelligence</div>
+  <div class="nav-dots" id="navDots"></div>
+  <div class="nav-arrows">
+    <button onclick="changeSlide(-1)">◀</button>
+    <button onclick="changeSlide(1)">▶</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════ SLIDE 0: COVER ═══════════════════════ -->
+<div class="slides-wrapper">
+<div class="slide active cover" data-bg="">
+  <div class="tag">🚗 Automotive Tier-1 Research Report</div>
+  <h1>주요 Tier-1 업체<br><span class="highlight">인포테인먼트 · 디지털 콕핏 · HMI</span><br>전략 & 공개 사례</h1>
+  <p class="sub">Bosch · Continental · Denso · Forvia · Visteon · Aptiv · Harman 등<br>2025-2026년 최신 전략 동향 종합 분석</p>
+  <p class="meta">2026.03 기준 · 공개 자료 기반 리서치</p>
+</div>
+
+<!-- ═══════════════════════ SLIDE 1: EXECUTIVE SUMMARY ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-blue">01</div>
+      <div><h2>Executive Summary</h2><div class="subtitle">산업 전체 핵심 트렌드 한눈에 보기</div></div>
+    </div>
+
+    <div class="kpi-strip">
+      <div class="kpi-box"><div class="num text-blue">$25B+</div><div class="label">인포테인먼트 구독 수익 전망<br>(2027년)</div></div>
+      <div class="kpi-box"><div class="num text-purple">65%+</div><div class="label">신규 IVI 시스템 OTA 지원률<br>(2025년)</div></div>
+      <div class="kpi-box"><div class="num text-cyan">28%</div><div class="label">EU GDPR 대응 재설계<br>인포테인먼트 비중</div></div>
+      <div class="kpi-box"><div class="num text-red">70-100%</div><div class="label">구형 DRAM 가격 상승 전망<br>(2026년)</div></div>
+    </div>
+
+    <div class="cards cols-3">
+      <div class="card border-left bl-blue">
+        <h3>🏗️ 중앙 집중형 아키텍처</h3>
+        <p>고성능 단일 SoC가 다중 디스플레이·AR 내비·음성·생체인식을 통합 제어. 시스템 복잡도 대폭 감소.</p>
+      </div>
+      <div class="card border-left bl-purple">
+        <h3>🤖 AI-Powered 멀티모달 HMI</h3>
+        <p>음성·제스처·햅틱 융합 인터페이스에 생성형 AI가 결합. 초개인화 경험 구현.</p>
+      </div>
+      <div class="card border-left bl-cyan">
+        <h3>💰 소프트웨어 수익화</h3>
+        <p>OTA 기반 기능 구독 모델 본격화. 하드웨어 판매를 넘어선 SaaS형 수익 구조로 전환 가속.</p>
+      </div>
+    </div>
+
+    <div class="footnote">출처: Intel Market Research, S&P Global Automotive Insights, GlobeNewsWire (2025-2026)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 2: COMPANY OVERVIEW ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-purple">02</div>
+      <div><h2>주요 7개 Tier-1 업체 포지셔닝</h2><div class="subtitle">각 사의 디지털 콕핏 핵심 역량 & 차별점</div></div>
+    </div>
+
+    <div class="cards cols-7" style="gap:12px;">
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#ef4444,#f97316);">BOSCH</div>
+        <h3>Bosch</h3>
+        <p>풀스택 솔루션<br>센서→소프트웨어</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#f59e0b,#eab308);">CONTI</div>
+        <h3>Continental</h3>
+        <p>디스플레이 + HPC<br>통합 콕핏</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#ef4444,#dc2626);">DENSO</div>
+        <h3>Denso</h3>
+        <p>Toyota 그룹 시너지<br>QNX 기반 안전</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);">FORV</div>
+        <h3>Forvia</h3>
+        <p>인테리어 + 디스플레이<br>감성 UX 특화</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#3b82f6,#2563eb);">VIST</div>
+        <h3>Visteon</h3>
+        <p>콕핏 도메인 전문<br>SmartCore™</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#06b6d4,#0891b2);">APTV</div>
+        <h3>Aptiv</h3>
+        <p>SDV 아키텍처<br>Wind River 통합</p>
+      </div>
+      <div class="company-card card">
+        <div class="logo-circle" style="background:linear-gradient(135deg,#10b981,#059669);">HRMN</div>
+        <h3>Harman</h3>
+        <p>Samsung 시너지<br>Ready Suite</p>
+      </div>
+    </div>
+
+    <table class="comp-table" style="margin-top:22px;">
+      <tr>
+        <th>업체</th><th>핵심 플랫폼</th><th>주요 칩 파트너</th><th>OS 전략</th><th>AI/LLM 통합</th>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Bosch</td>
+        <td>Bosch Cockpit Platform</td>
+        <td>Qualcomm, NXP</td>
+        <td>Android Automotive, Linux</td>
+        <td>Bosch AI-enhanced HMI</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Continental</td>
+        <td>High-Perf. Computer (HPC)</td>
+        <td>Qualcomm SA8295P</td>
+        <td>Android, QNX Hypervisor</td>
+        <td>LLM 기반 음성 비서</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Denso</td>
+        <td>Cockpit System Module</td>
+        <td>Renesas R-Car</td>
+        <td>QNX, Android</td>
+        <td>Toyota AI 에이전트 협업</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Forvia</td>
+        <td>Immersive Cockpit</td>
+        <td>Qualcomm, Mediatek</td>
+        <td>Android Automotive</td>
+        <td>감성 AI (Emotion Sensing)</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Visteon</td>
+        <td>SmartCore™ / AllGo</td>
+        <td>Qualcomm SA8295P</td>
+        <td>Android, Linux, QNX</td>
+        <td>AllGo AI 미디어 엔진</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Aptiv</td>
+        <td>Smart Vehicle Architecture™</td>
+        <td>NVIDIA, Qualcomm</td>
+        <td>Wind River Linux</td>
+        <td>NVIDIA Thor-U 기반 ADAS+IVI</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Harman</td>
+        <td>Ready Suite (Care/Upgrade/Vision)</td>
+        <td>Samsung Exynos, Qualcomm</td>
+        <td>Android Automotive</td>
+        <td>Samsung AI 생태계 연동</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 3: BOSCH & CONTINENTAL ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-red" style="background:rgba(239,68,68,0.2);color:#ef4444;">03</div>
+      <div><h2>Bosch & Continental 심층 분석</h2><div class="subtitle">유럽 양대 Tier-1의 콕핏 전략 비교</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card" style="border-top:3px solid #ef4444;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(239,68,68,0.15);color:#ef4444;font-weight:900;font-size:.8rem;">BOSCH</div>
+          <h3 style="font-size:1.15rem;">Bosch</h3>
+        </div>
+        <div class="badge bg-red text-red">Full-Stack Approach</div>
+        <ul class="bullet-list">
+          <li><strong>ETAS OTA 솔루션</strong> — 소프트웨어 전체 라이프사이클 관리. 차량 출고 후에도 지속적 기능 업데이트 지원</li>
+          <li><strong>Bosch Engineering AI HMI</strong> — 멀티모달 인터페이스(음성+제스처+햅틱) 통합, 운전자 상태 모니터링과 연동</li>
+          <li><strong>센서-to-콕핏 수직 통합</strong> — 레이더·카메라 센서 데이터를 콕핏 디스플레이에 실시간 시각화</li>
+          <li><strong>Cross-Domain Controller</strong> — 콕핏+ADAS 기능을 단일 ECU에서 처리하는 도메인 통합 가속</li>
+          <li><strong>CES 2025</strong> — AI 음성 비서 및 AR HUD 프로토타입 공개</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-top:3px solid #f59e0b;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(245,158,11,0.15);color:#f59e0b;font-weight:900;font-size:.7rem;">CONTI</div>
+          <h3 style="font-size:1.15rem;">Continental</h3>
+        </div>
+        <div class="badge bg-amber text-amber">Display + Compute Leader</div>
+        <ul class="bullet-list">
+          <li><strong>High-Performance Computer (HPC)</strong> — Qualcomm SA8295P 기반 단일 칩으로 최대 8개 디스플레이 동시 구동</li>
+          <li><strong>Pillar-to-Pillar Display</strong> — 대면적 곡면 디스플레이 양산 기술 확보, 프리미엄 OEM 수주 확대</li>
+          <li><strong>QNX Hypervisor 기반 멀티OS</strong> — 안전 크리티컬(QNX) + 엔터테인먼트(Android) 동시 실행</li>
+          <li><strong>LLM 기반 Natural Voice</strong> — 대화형 AI 음성 비서로 기존 커맨드 방식 대체</li>
+          <li><strong>글로벌 시장 점유 1-2위</strong> — Panasonic과 함께 인포테인먼트 시장 선도</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footnote">출처: Intel Market Research (2025), S&P Global Automotive Insights (2026.01)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 4: DENSO & FORVIA ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-green" style="background:rgba(16,185,129,0.2);color:#10b981;">04</div>
+      <div><h2>Denso & Forvia 심층 분석</h2><div class="subtitle">일본·프랑스 기반 차별화 전략</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card" style="border-top:3px solid #ef4444;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(239,68,68,0.15);color:#ef4444;font-weight:900;font-size:.75rem;">DENSO</div>
+          <h3 style="font-size:1.15rem;">Denso</h3>
+        </div>
+        <div class="badge bg-red text-red">Safety-First Cockpit</div>
+        <ul class="bullet-list">
+          <li><strong>Cockpit System Module (CSM)</strong> — Renesas R-Car Gen4 기반, 계기판+IVI+HUD를 단일 모듈로 통합</li>
+          <li><strong>Toyota 그룹 시너지</strong> — Toyota Arene SDV 플랫폼과 긴밀 협업, 대량 양산 최적화</li>
+          <li><strong>QNX RTOS 기반 안전 아키텍처</strong> — ASIL-B 이상 기능안전 등급 확보로 계기판·DMS 안정성 보장</li>
+          <li><strong>DMS/OMS 통합</strong> — 운전자 및 탑승객 모니터링을 콕핏 ECU에 직접 통합, Euro NCAP 대응</li>
+          <li><strong>소형·경량 모듈 설계</strong> — BEV 공간 효율성 극대화 목표</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-top:3px solid #8b5cf6;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(139,92,246,0.15);color:#8b5cf6;font-weight:900;font-size:.75rem;">FORVIA</div>
+          <h3 style="font-size:1.15rem;">Forvia (Faurecia + Hella)</h3>
+        </div>
+        <div class="badge bg-purple text-purple">Immersive Experience</div>
+        <ul class="bullet-list">
+          <li><strong>Immersive Cockpit 플랫폼</strong> — 시트·조명·디스플레이·사운드를 통합 제어하는 '감성 콕핏' 전략</li>
+          <li><strong>Emotion Sensing AI</strong> — 카메라+생체센서로 탑승자 감정 상태를 분석, 조명·음악·향기 자동 조절</li>
+          <li><strong>대면적 디스플레이 + 데코 통합</strong> — 인테리어 표면에 매립된 '인비저블 디스플레이' 기술</li>
+          <li><strong>Hella 조명 시너지</strong> — 외장·내장 조명과 콕핏 UX의 연계로 차별화된 브랜드 경험 제공</li>
+          <li><strong>CES 2025</strong> — '웰빙 콕핏' 컨셉 시연 (명상 모드, 에너지 부스트 모드 등)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footnote">출처: Intel Market Research (2025), LTI Mindtree Automotive Technology Trends Report (2025.10)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 5: VISTEON & APTIV ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-blue">05</div>
+      <div><h2>Visteon & Aptiv 심층 분석</h2><div class="subtitle">콕핏 전문 vs SDV 플랫폼 전략</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card" style="border-top:3px solid #3b82f6;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(59,130,246,0.15);color:#3b82f6;font-weight:900;font-size:.75rem;">VISTEON</div>
+          <h3 style="font-size:1.15rem;">Visteon</h3>
+        </div>
+        <div class="badge bg-blue text-blue">Cockpit Domain Pure-Play</div>
+        <ul class="bullet-list">
+          <li><strong>SmartCore™ Gen4</strong> — Qualcomm SA8295P 기반 차세대 콕핏 도메인 컨트롤러, 다수 글로벌 OEM 수주</li>
+          <li><strong>AllGo AI 미디어 엔진</strong> — 인도 AllGo 인수로 확보한 미디어 처리 AI, 영상/오디오 최적 렌더링</li>
+          <li><strong>콕핏 도메인 100% 집중</strong> — 타 Tier-1 대비 콕핏·디스플레이 전문성 극대화 전략</li>
+          <li><strong>다중 디스플레이 통합</strong> — 클러스터+센터+패신저+리어 최대 6스크린 단일 컨트롤러 제어</li>
+          <li><strong>Android Automotive + QNX</strong> — 하이퍼바이저 기반 멀티OS로 안전과 엔터테인먼트 양립</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-top:3px solid #06b6d4;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+          <div class="icon" style="background:rgba(6,182,212,0.15);color:#06b6d4;font-weight:900;font-size:.75rem;">APTIV</div>
+          <h3 style="font-size:1.15rem;">Aptiv</h3>
+        </div>
+        <div class="badge bg-cyan text-cyan">SDV Architecture Master</div>
+        <ul class="bullet-list">
+          <li><strong>Smart Vehicle Architecture™ (SVA)</strong> — 차량 전체 E/E 아키텍처를 재정의, 콕핏은 '존 컨트롤러'의 일부로 통합</li>
+          <li><strong>Wind River 인수 (2023)</strong> — 차량용 OS 및 미들웨어 내재화, VxWorks·Linux 기반 소프트웨어 스택</li>
+          <li><strong>NVIDIA Thor-U 기반 통합</strong> — ADAS+콕핏 기능을 단일 고성능 칩에서 처리하는 중앙 컴퓨트 비전 (2025.07 공개)</li>
+          <li><strong>OTA 라이프사이클 관리</strong> — 차량 출하 후 10년 이상 소프트웨어 업데이트 지원 인프라</li>
+          <li><strong>GM·BMW 등 프리미엄 OEM</strong> — 차세대 SDV 플랫폼 핵심 공급업체로 선정</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footnote">출처: GlobeNewsWire OTA Industry Report (2026.03), S&P Global Automotive Insights (2026.01)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 6: HARMAN ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-green" style="background:rgba(16,185,129,0.2);color:#10b981;">06</div>
+      <div><h2>Harman (Samsung) 심층 분석</h2><div class="subtitle">인카빈 경험의 궁극적 차별화를 추구</div></div>
+    </div>
+
+    <div class="cards cols-3" style="margin-bottom:20px;">
+      <div class="card" style="border-top:3px solid #10b981;">
+        <div class="badge bg-green text-green">Ready Care</div>
+        <h3>🛡️ 안전 & 웰빙</h3>
+        <p>운전자 상태 모니터링, 피로·주의분산 감지, 탑승자 맞춤 웰빙 기능. Euro NCAP 2025+ 기준 충족.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #3b82f6;">
+        <div class="badge bg-blue text-blue">Ready Upgrade</div>
+        <h3>🔄 OTA 업그레이드</h3>
+        <p>기능 단위 OTA 업데이트. 구독형 프리미엄 기능 활성화. OEM의 차량 출하 후 수익 창출 지원.</p>
+      </div>
+      <div class="card" style="border-top:3px solid #8b5cf6;">
+        <div class="badge bg-purple text-purple">Ready Vision</div>
+        <h3>🔮 AR & 비전</h3>
+        <p>AR HUD + 카메라 퓨전으로 증강현실 내비게이션. 실제 도로 위에 안내 정보 오버레이.</p>
+      </div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card">
+        <h3>🏭 Samsung 시너지 효과</h3>
+        <ul class="bullet-list">
+          <li>Samsung Exynos Auto 칩 — 자체 AP로 콕핏 SoC 내재화</li>
+          <li>Samsung Display — OLED·마이크로LED 기술 연동</li>
+          <li>SmartThings 생태계 — 집↔차 IoT 연결 경험</li>
+          <li>수직 통합 (칩+디스플레이+소프트웨어+오디오)로 원가 경쟁력 확보</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>📈 전략 방향 (2026)</h3>
+        <ul class="bullet-list">
+          <li>"인카빈 경험이 궁극적 차별화 요소" — 프리미엄·양산 양쪽 공략</li>
+          <li>3rd Party 앱 생태계 확장 — 개방형 플랫폼 전략</li>
+          <li>지역별 맞춤 콘텐츠 — 중국·인도·유럽 현지화</li>
+          <li>2026년 선별적이지만 의미 있는 성장 기대</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footnote">출처: S&P Global Automotive Supplier Outlook (2026.01) — "accelerated global growth as the in-cabin experience becomes the ultimate differentiator"</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 7: TECHNOLOGY TRENDS ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-cyan" style="background:rgba(6,182,212,0.2);color:#06b6d4;">07</div>
+      <div><h2>핵심 기술 트렌드 & 공통 방향</h2><div class="subtitle">2025-2026 Tier-1 공통 기술 투자 영역</div></div>
+    </div>
+
+    <div class="cards cols-2">
+      <div class="card">
+        <div class="icon bg-blue" style="color:var(--accent);">🧠</div>
+        <h3>생성형 AI & LLM 통합</h3>
+        <p>차량 내 자연어 대화형 비서가 단순 커맨드 방식을 대체. 주행 맥락·사용자 선호를 반영한 초개인화 응답. 온디바이스+클라우드 하이브리드 추론 아키텍처가 대세.</p>
+      </div>
+      <div class="card">
+        <div class="icon bg-purple" style="color:var(--accent2);">🖥️</div>
+        <h3>중앙 집중형 HPC 아키텍처</h3>
+        <p>NVIDIA Thor-U, Qualcomm SA8295P/SA8650P, Renesas R-Car Gen5 등 차세대 SoC가 콕핏+ADAS를 단일 칩에서 처리. 전통적 분산 ECU 대비 BOM 30%+ 절감 가능.</p>
+      </div>
+      <div class="card">
+        <div class="icon bg-green" style="color:var(--accent6);">📱</div>
+        <h3>Android Automotive OS 확산</h3>
+        <p>Google AAOS가 사실상 IVI 표준 OS로 자리매김. 3rd Party 앱 생태계 확장으로 OEM 차별화 동시 지원. 중국에서는 독자 OS(HarmonyOS 등)와 경쟁 구도.</p>
+      </div>
+      <div class="card">
+        <div class="icon bg-amber" style="color:var(--accent4);">🔄</div>
+        <h3>OTA 및 소프트웨어 수익화</h3>
+        <p>차량 출하 후 기능 업데이트·구독 서비스로 OEM에 반복 수익 창출. 2027년 구독 수익 $25B+ 전망. Tier-1은 OTA 인프라·보안을 핵심 역량으로 구축.</p>
+      </div>
+      <div class="card">
+        <div class="icon bg-red" style="color:var(--accent5);">👁️</div>
+        <h3>DMS/OMS & 안전 규제 대응</h3>
+        <p>Euro NCAP 2025+, EU GSR 2 규제로 운전자 모니터링 의무화. IR 카메라 기반 졸음·주의분산 감지가 콕핏 ECU에 통합되는 추세.</p>
+      </div>
+      <div class="card">
+        <div class="icon bg-cyan" style="color:var(--accent3);">🌐</div>
+        <h3>디스플레이 혁신 & AR HUD</h3>
+        <p>Pillar-to-Pillar 대면적 OLED, 투명 디스플레이, 마이크로LED 양산 진입. AR HUD는 FOV 확대(15°+)로 실도로 AR 내비 실현. 디스플레이 원가 절감이 핵심 과제.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 8: COMPARISON TABLE ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-amber" style="background:rgba(245,158,11,0.2);color:#f59e0b;">08</div>
+      <div><h2>업체별 전략 비교 매트릭스</h2><div class="subtitle">6가지 핵심 축에서의 포지셔닝 비교</div></div>
+    </div>
+
+    <table class="comp-table">
+      <tr>
+        <th>업체</th>
+        <th>콕핏 통합도</th>
+        <th>AI/LLM 수준</th>
+        <th>디스플레이 기술</th>
+        <th>OTA/SW 수익화</th>
+        <th>SDV 아키텍처</th>
+        <th>핵심 차별점</th>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Bosch</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>센서→SW 풀스택</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Continental</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>HPC+대면적 디스플레이</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Denso</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>Toyota 시너지+안전</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Forvia</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤◯◯◯</td>
+        <td>⬤⬤◯◯◯</td>
+        <td>인테리어+감성 UX</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Visteon</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>콕핏 도메인 100% 전문</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Aptiv</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤◯◯◯</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>E/E 아키텍처 리더</td>
+      </tr>
+      <tr>
+        <td style="color:#fff;font-weight:700;">Harman</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤⬤◯</td>
+        <td>⬤⬤⬤⬤⬤</td>
+        <td>⬤⬤⬤◯◯</td>
+        <td>Samsung 수직 통합</td>
+      </tr>
+    </table>
+
+    <div style="margin-top:18px;display:flex;gap:16px;">
+      <div class="card" style="flex:1;padding:16px;">
+        <h3 style="font-size:.85rem;">🔑 인사이트</h3>
+        <p>콕핏 하드웨어 통합은 대부분 고도화 완료 단계. 향후 차별화는 <strong>AI·소프트웨어 수익화·SDV 아키텍처</strong> 역량에서 결정될 전망. Aptiv(SDV 아키텍처)과 Harman(AI+구독)이 소프트웨어 축에서 선도.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 9: TIMELINE ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-purple">09</div>
+      <div><h2>주요 이벤트 타임라인</h2><div class="subtitle">2025-2026 공개 사례 및 발표 일정</div></div>
+    </div>
+
+    <div class="timeline-row" style="margin-bottom:16px;">
+      <div class="timeline-item">
+        <div class="year bg-blue text-blue">2025 Q1</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">CES 2025</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">Bosch AI HMI, Forvia 웰빙 콕핏, Harman Ready Vision AR HUD, Visteon SmartCore Gen4 시연</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year bg-purple text-purple">2025 Q2</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">양산 수주 확대</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">Continental HPC 유럽 프리미엄 OEM 수주, Visteon 중국 EV 브랜드 대량 수주 발표</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year bg-cyan text-cyan">2025 Q3</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">NVIDIA Thor-U 통합</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">Aptiv, NVIDIA Thor-U 기반 ADAS+콕핏 통합 솔루션 공개 (2025.07)</p>
+      </div>
+    </div>
+
+    <div class="timeline-row">
+      <div class="timeline-item">
+        <div class="year bg-amber text-amber">2025 Q4</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">SW 수익화 본격화</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">Harman Ready Upgrade 구독 서비스 다수 OEM 도입, OTA 기반 기능 활성화 시작</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year bg-red text-red">2026 Q1</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">CES 2026 & 공급망 이슈</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">차세대 콕핏 플랫폼 공개. DRAM 가격 급등(70-100%)으로 원가 압박 가시화</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year bg-green text-green">2026 H2 전망</div>
+        <h3 style="font-size:.88rem;color:#fff;margin-bottom:6px;">안정화 & 기술 심화</h3>
+        <p style="font-size:.78rem;color:#94a3b8;">기술 깊이·원가 절감·전략적 집중으로 선별적 성장 예상 (S&P Global)</p>
+      </div>
+    </div>
+
+    <div class="footnote">출처: GlobeNewsWire (2026.03), S&P Global Automotive Insights (2026.01-02)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 10: CHALLENGES & OUTLOOK ═══════════════════════ -->
+<div class="slide">
+  <div class="slide-inner">
+    <div class="slide-header">
+      <div class="slide-num bg-red" style="background:rgba(239,68,68,0.2);color:#ef4444;">10</div>
+      <div><h2>도전 과제 & 향후 전망</h2><div class="subtitle">2026년 이후 업계가 직면할 핵심 이슈</div></div>
+    </div>
+
+    <div class="cards cols-2" style="margin-bottom:20px;">
+      <div class="card" style="border-left:3px solid #ef4444;">
+        <h3>⚠️ 도전 과제</h3>
+        <ul class="bullet-list">
+          <li><strong>DRAM 공급 부족</strong> — 구형 DRAM 가격 70-100% 상승 전망. 고사양 콕핏(다중 디스플레이) 원가 직격탄</li>
+          <li><strong>데이터 프라이버시 규제</strong> — EU GDPR로 28% 시스템 재설계. 지역별 상이한 규제로 개발 비용 증가</li>
+          <li><strong>반도체 리드타임</strong> — 차세대 SoC(Thor-U, SA8650P) 수급 불확실성 지속</li>
+          <li><strong>소프트웨어 복잡도 폭증</strong> — 1억 라인+ 코드베이스의 품질 관리·사이버보안 과제</li>
+          <li><strong>중국 업체의 가격 경쟁</strong> — Desay SV, PATEO 등 중국 Tier-1의 저가 공세</li>
+        </ul>
+      </div>
+      <div class="card" style="border-left:3px solid #10b981;">
+        <h3>🚀 성장 기회</h3>
+        <ul class="bullet-list">
+          <li><strong>구독 수익 모델</strong> — 2027년 $25B+ 시장. HW→SW 수익 전환의 최대 기회</li>
+          <li><strong>SDV 플랫폼 전환</strong> — 차량 E/E 아키텍처 재정의로 Tier-1 역할 확대</li>
+          <li><strong>생성형 AI 차별화</strong> — 차량 내 AI 에이전트로 브랜드 경험 극대화</li>
+          <li><strong>신흥 시장 확대</strong> — 인도·동남아 등 신규 시장에서 디지털 콕핏 수요 급증</li>
+          <li><strong>자율주행 Level 3+</strong> — 비운전 시간 증가로 인카빈 엔터테인먼트 수요 폭발</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1)); border:1px solid rgba(59,130,246,0.2); text-align:center; padding:28px;">
+      <h3 style="font-size:1.1rem; margin-bottom:10px;">💡 핵심 전망</h3>
+      <p style="font-size:.92rem; color:#e2e8f0; max-width:800px; margin:0 auto; line-height:1.7;">
+        2026년은 <strong>기술 깊이, 원가 규율, 전략적 집중</strong>의 해. 전기화·자율주행·SDV·인카빈 인텔리전스에<br>
+        <strong>선별적이지만 의미 있는 성장</strong>이 집중될 전망 — S&P Global Automotive
+      </p>
+    </div>
+
+    <div class="footnote">출처: S&P Global Automotive Insights (2026.01-02), Intel Market Research (2025)</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ SLIDE 11: CLOSING ═══════════════════════ -->
+<div class="slide cover">
+  <div class="tag">📋 Summary</div>
+  <h1 style="font-size:clamp(1.6rem,3vw,2.4rem);">소프트웨어와 AI가<br><span class="highlight">인카빈 경험의 미래</span>를 결정한다</h1>
+  <p class="sub" style="max-width:750px;">
+    하드웨어 통합은 이미 성숙 단계에 진입. 향후 Tier-1의 경쟁력은<br>
+    <strong>AI 기반 초개인화 HMI · OTA 소프트웨어 수익화 · SDV 아키텍처 주도권</strong>에서 갈린다.
+  </p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px;">
+    <span style="padding:8px 18px;border-radius:20px;background:rgba(59,130,246,0.15);color:#3b82f6;font-size:.82rem;border:1px solid rgba(59,130,246,0.3);">🤖 Gen AI HMI</span>
+    <span style="padding:8px 18px;border-radius:20px;background:rgba(139,92,246,0.15);color:#8b5cf6;font-size:.82rem;border:1px solid rgba(139,92,246,0.3);">🏗️ Central HPC</span>
+    <span style="padding:8px 18px;border-radius:20px;background:rgba(6,182,212,0.15);color:#06b6d4;font-size:.82rem;border:1px solid rgba(6,182,212,0.3);">💰 SW Monetization</span>
+    <span style="padding:8px 18px;border-radius:20px;background:rgba(16,185,129,0.15);color:#10b981;font-size:.82rem;border:1px solid rgba(16,185,129,0.3);">🚗 SDV Platform</span>
+    <span style="padding:8px 18px;border-radius:20px;background:rgba(245,158,11,0.15);color:#f59e0b;font-size:.82rem;border:1px solid rgba(245,158,11,0.3);">🔒 Safety & Privacy</span>
+  </div>
+  <p class="meta" style="margin-top:24px;">2026.03 기준 · 공개 자료 기반 리서치 · Confidential</p>
+</div>
+
+</div><!-- slides-wrapper -->
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let current = 0;
+  const dotsContainer = document.getElementById('navDots');
+
+  // Create dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goTo(i);
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dotsContainer.children[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dotsContainer.children[current].classList.add('active');
+  }
+
+  function changeSlide(dir) {
+    let next = current + dir;
+    if (next < 0) next = slides.length - 1;
+    if (next >= slides.length) next = 0;
+    goTo(next);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+  });
+
+  // Touch/swipe
+  let touchX = 0;
+  document.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const diff = touchX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+  });
+</script>
+
+</body>
+</html>

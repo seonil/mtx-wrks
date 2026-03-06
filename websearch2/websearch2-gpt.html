@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tier-1 인포테인먼트/디지털 콕핏/HMI 전략 (최근 1년)</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#111a33; --text:#e9eefc; --muted:#aab6e8;
+      --accent:#7aa2ff; --line:rgba(255,255,255,.12);
+      --good:#59d98e; --warn:#ffd166;
+      --w: 1200px;
+    }
+    html,body{height:100%;}
+    body{
+      margin:0; background:radial-gradient(1200px 800px at 20% 10%, #17234a 0%, var(--bg) 55%);
+      color:var(--text); font:16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .deck{height:100%; display:flex; flex-direction:column;}
+    header{
+      padding:14px 18px; display:flex; justify-content:space-between; align-items:center;
+      border-bottom:1px solid var(--line); background:rgba(10,16,32,.45); backdrop-filter: blur(8px);
+    }
+    header .title{font-weight:700; letter-spacing:.2px;}
+    header .meta{color:var(--muted); font-size:13px;}
+    .stage{flex:1; display:flex; align-items:center; justify-content:center; padding:22px;}
+    .slide{
+      width:min(var(--w), 96vw);
+      min-height:min(680px, 82vh);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:28px 30px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      display:none;
+    }
+    .slide.active{display:block;}
+    h1{margin:0 0 10px; font-size:34px; line-height:1.15;}
+    h2{margin:0 0 10px; font-size:24px;}
+    h3{margin:18px 0 8px; font-size:16px; color:#dbe3ff;}
+    p{margin:8px 0;}
+    ul{margin:8px 0 0 18px;}
+    li{margin:6px 0;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:18px; align-items:start;}
+    .card{
+      background:rgba(10,16,32,.35);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 14px 12px;
+    }
+    .kpi{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .pill{
+      border:1px solid var(--line); color:var(--muted);
+      padding:6px 10px; border-radius:999px; font-size:13px;
+      background:rgba(10,16,32,.25);
+    }
+    .pill strong{color:var(--text);}
+    .sources{margin-top:14px; color:var(--muted); font-size:12.5px;}
+    .sources a{color:var(--muted); text-decoration:none; border-bottom:1px dotted rgba(255,255,255,.25);}
+    .sources a:hover{color:var(--text);}
+    footer{
+      padding:10px 16px; display:flex; justify-content:space-between; align-items:center;
+      border-top:1px solid var(--line); color:var(--muted); font-size:13px;
+      background:rgba(10,16,32,.45); backdrop-filter: blur(8px);
+    }
+    .progress{display:flex; align-items:center; gap:10px;}
+    .bar{width:240px; height:6px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden;}
+    .bar > i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--accent), #9b7aff);}
+    .hint{color:var(--muted);}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+    .tag{display:inline-block; padding:3px 8px; border-radius:8px; font-size:12px; margin-right:6px;
+         border:1px solid var(--line); background:rgba(122,162,255,.10); color:#cfe0ff;}
+  </style>
+</head>
+<body>
+<div class="deck">
+  <header>
+    <div class="title">Tier-1 인포테인먼트/디지털 콕핏/HMI 전략 & 공개 사례 (최근 1년)</div>
+    <div class="meta">범위: 2025-03-06 ~ 2026-03-06 · 출처: 공개자료(링크)</div>
+  </header>
+
+  <div class="stage">
+
+    <!-- 1 -->
+    <section class="slide active" data-title="표지">
+      <h1>인포테인먼트 / 디지털 콕핏 / HMI<br/>Tier-1 전략 & 공개 사례</h1>
+      <p>대상: Bosch · Continental · Denso · Forvia · Visteon · Aptiv · Harman</p>
+      <div class="kpi">
+        <span class="pill"><strong>핵심 질문</strong> “무엇을 플랫폼화했고, 무엇을 차별 UX로 남겼나?”</span>
+        <span class="pill"><strong>출력</strong> HTML 단일 파일(오프라인 구동)</span>
+      </div>
+      <div class="sources">
+        ※ 본 템플릿은 다음 턴에서 회사별 근거 링크를 채워 완성본으로 업데이트합니다.
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide" data-title="목차">
+      <h2>목차</h2>
+      <ul>
+        <li>조사 프레임(전략 분류 기준)</li>
+        <li>최근 1년 콕핏/HMI 트렌드(공개 근거)</li>
+        <li>Tier-1별 전략 & 공개 사례 (7개사)</li>
+        <li>비교표(공통축/차별축) + 시사점</li>
+      </ul>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide" data-title="조사 프레임">
+      <h2>조사 프레임(슬라이드에 일관 적용)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 축(What)</h3>
+          <ul>
+            <li><span class="tag">SDV</span> 콕핏 도메인/존 컨트롤러, 서비스화(OTA, 구독)</li>
+            <li><span class="tag">플랫폼</span> OS/미들웨어/하이퍼바이저, 앱 생태계</li>
+            <li><span class="tag">HMI</span> 멀티스크린·HUD·음성·멀티모달·개인화</li>
+            <li><span class="tag">AI</span> 인카빈 LLM, 온디바이스/클라우드 분업, 안전가드</li>
+            <li><span class="tag">Safety/Security</span> mixed-criticality, 격리, 규격 대응</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>공개 사례 축(Proof)</h3>
+          <ul>
+            <li>공식 보도자료/제품 페이지/기술 블로그</li>
+            <li>CES·IAA 등 전시/데모 발표</li>
+            <li>파트너십(Qualcomm/NVIDIA/Google/AWS 등)</li>
+            <li>OEM 적용/수주(가능 시 SOP 언급)</li>
+          </ul>
+          <div class="kpi">
+            <span class="pill"><strong>원칙</strong> 추정/전언 제외, 링크로 검증 가능한 항목만 수록</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide" data-title="트렌드(근거)">
+      <h2>최근 1년 트렌드(공개 근거 기반)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>트렌드 A: 콕핏 개발의 ‘가상화·클라우드-퍼스트’ 강화</h3>
+          <ul>
+            <li>mixed-criticality(계기판/안전 영역 vs 소비자 앱) 공존을 전제로 개발/검증 파이프라인을 재구성</li>
+            <li>HMI는 “앱”이 아니라 “플랫폼 위 UX 서비스”로 재정의되는 흐름</li>
+          </ul>
+          <div class="kpi">
+            <span class="pill"><strong>키워드</strong> virtualization · mixed-criticality · cabin framework</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>트렌드 B: AAOS·Snapdragon 기반의 통합 콕핏 레퍼런스 확산</h3>
+          <ul>
+            <li>Android Automotive OS 기반 통합 콕핏(멀티유저/미디어/연동) 레퍼런스가 전시·어워드에서 반복적으로 등장</li>
+            <li>Tier-1은 “하드웨어+OS” 묶음이 아니라 “UX 통합/차별 기능/운영”으로 부가가치를 이동</li>
+          </ul>
+          <div class="kpi">
+            <span class="pill"><strong>키워드</strong> AAOS · Snapdragon Cockpit · unified cabin</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sources">
+        Sources:
+        <a href="https://www.computerweekly.com/news/366617720/CES-2025-QNX-claims-industry-first-automotive-digital-cockpit" target="_blank" rel="noopener">ComputerWeekly (QNX Cabin, CES 2025)</a> ·
+        <a href="https://www.ces.tech/ces-innovation-awards/2025/unified-cabin-2025/" target="_blank" rel="noopener">CES Innovation Awards (Unified Cabin 2025)</a> ·
+        <a href="https://www.qualcomm.com/news/releases/2025/01/garmin-and-qualcomm-reveal-next-gen-digital-cockpit-solution-pow" target="_blank" rel="noopener">Qualcomm Newsroom (Garmin+Qualcomm, 2025-01)</a>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide" data-title="Bosch">
+      <h2>Bosch — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] SDV/콕핏 컴퓨팅/UX 플랫폼 방향</li>
+            <li>[Placeholder] AI/개인화/멀티모달 HMI 접근</li>
+          </ul>
+          <div class="kpi">
+            <span class="pill"><strong>확인 필요</strong> 2025~2026 공식 발표 링크</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] 보도자료/제품 페이지/행사 발표</li>
+            <li>[링크] 파트너십/데모/양산 적용</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide" data-title="Continental">
+      <h2>Continental — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] 디지털 콕핏/디스플레이·HUD·UX 스택</li>
+            <li>[Placeholder] OS/플랫폼/보안·기능안전(격리) 접근</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] 행사(CES/IAA) 데모</li>
+            <li>[링크] 제품 발표/고객 적용</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide" data-title="Denso">
+      <h2>Denso — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] HMI/인카빈 경험, 커넥티드/클라우드 연계</li>
+            <li>[Placeholder] SDV 관점의 플랫폼/소프트웨어 역량</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] 기술/제품 발표</li>
+            <li>[링크] 협력/생태계(오픈소스/표준 등)</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide" data-title="Forvia">
+      <h2>Forvia — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] 콕핏/HMI(디스플레이·인테리어 융합) 방향</li>
+            <li>[Placeholder] 개인화/센싱/UX 컨셉</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] 콘셉트/데모/전시 발표</li>
+            <li>[링크] 고객 적용/협력 발표</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide" data-title="Visteon">
+      <h2>Visteon — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] 콕핏 도메인 컨트롤러/플랫폼/OTA</li>
+            <li>[Placeholder] HMI 및 파트너 생태계 전략</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] OEM 적용/수주/제품 릴리즈</li>
+            <li>[링크] 파트너십(Qualcomm 등) 업데이트</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" data-title="Aptiv">
+      <h2>Aptiv — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] SDV 아키텍처 관점에서의 콕핏/UX 포지셔닝</li>
+            <li>[Placeholder] 소프트웨어/플랫폼/통합 역량</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] 공개 데모/제품/고객 발표</li>
+            <li>[링크] 파트너십 및 기술 발표</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide" data-title="Harman">
+      <h2>Harman — 전략 & 공개 사례(채움 예정)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>전략 요약(추가 조사 후 확정)</h3>
+          <ul>
+            <li>[Placeholder] Ready 제품군/콕핏 SW·서비스/개인화</li>
+            <li>[Placeholder] 음성/멀티모달/생성형 AI 적용 방향</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>최근 1년 공개 사례(근거 링크)</h3>
+          <ul>
+            <li>[링크] CES/행사 발표</li>
+            <li>[링크] OEM 적용/파트너십</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide" data-title="비교표(초안)">
+      <h2>비교표(초안) — 다음 턴에 근거 링크 기반으로 확정</h2>
+      <div class="card">
+        <ul>
+          <li><span class="mono">공통</span>: SDV/플랫폼화, 멀티스크린, 개인화, 가상화/격리, 파트너 생태계</li>
+          <li><span class="mono">차별</span>: “UX/IP(고유 경험)”을 어디에 두는지(예: AI 비서, 오디오, 디스플레이, 서비스 운영)</li>
+          <li><span class="mono">리스크</span>: 규제/기능안전과 소비자 앱 속도의 충돌, 데이터 거버넌스, 공급망(SoC)</li>
+        </ul>
+      </div>
+      <div class="sources">Sources: (다음 턴에서 추가)</div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="progress">
+      <span id="counter">1 / 12</span>
+      <span class="bar" aria-hidden="true"><i id="barfill"></i></span>
+      <span class="hint">←/→ 키 · Home/End · 주소창 #슬라이드번호</span>
+    </div>
+    <div class="meta">빌드: 2026-03-06 · HTML Single-file</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+  function getIndexFromHash(){
+    const m = (location.hash||'').match(/#(\d+)/);
+    if(!m) return 0;
+    return clamp(parseInt(m[1],10)-1, 0, slides.length-1);
+  }
+  function show(i){
+    i = clamp(i, 0, slides.length-1);
+    slides.forEach((s,idx)=>s.classList.toggle('active', idx===i));
+    document.getElementById('counter').textContent = `${i+1} / ${slides.length}`;
+    document.getElementById('barfill').style.width = `${(i)/(slides.length-1)*100}%`;
+    if(location.hash !== `#${i+1}`) history.replaceState(null,'',`#${i+1}`);
+    document.title = `(${i+1}/${slides.length}) ${slides[i].dataset.title || 'Slide'}`;
+  }
+  function next(){ show(getIndexFromHash()+1); }
+  function prev(){ show(getIndexFromHash()-1); }
+  function first(){ show(0); }
+  function last(){ show(slides.length-1); }
+
+  window.addEventListener('hashchange', ()=>show(getIndexFromHash()));
+  window.addEventListener('keydown', (e)=>{
+    if(e.key==='ArrowRight' || e.key==='PageDown') next();
+    if(e.key==='ArrowLeft'  || e.key==='PageUp') prev();
+    if(e.key==='Home') first();
+    if(e.key==='End') last();
+  });
+
+  show(getIndexFromHash());
+})();
+</script>
+</body>
+</html>

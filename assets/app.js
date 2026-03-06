@@ -139,6 +139,20 @@ const SITE_DATA = {
       ],
     },
     {
+      id: "websearch2",
+      label: "Tier-1 디지털 콕핏 전략 슬라이드",
+      group: "웹서칭",
+      type: "html",
+      description:
+        "주요 Tier-1 업체의 인포테인먼트·디지털 콕핏·HMI 전략을 HTML 슬라이드 형태로 비교합니다.",
+      queryPath: "websearch2/websearch2-query.md",
+      outputs: [
+        { model: "GPT 5.2", key: "gpt", kind: "html", path: "websearch2/websearch2-gpt.html" },
+        { model: "CLAUDE Opus4.6", key: "claude", kind: "html", path: "websearch2/websearch2-claude.html" },
+        { model: "GEMINI Pro 3.1", key: "gemini", kind: "html", path: "websearch2/websearch2-gemini.html" },
+      ],
+    },
+    {
       id: "html",
       label: "프로젝트 현황 대시보드 생성",
       group: "HTML 작성",
@@ -174,6 +188,7 @@ const state = {
   contentCache: new Map(),
   controls: {},
   renderToken: 0,
+  pendingScrollTaskId: null,
 };
 
 const navTree = document.getElementById("navTree");
@@ -350,6 +365,7 @@ async function renderOverview(token) {
           </div>
         </div>
         <div class="content-section__body markdown-body">
+          <img class="overview-intro-image" src="intro.png" alt="비교 개요 소개 이미지">
           <p>아이디어 정리, HTML 작성, 웹 리서치처럼 상황에 따라 어떤 모델들이 답변을 더 잘하는지 비교해보세요</p>
         </div>
       </article>
@@ -382,6 +398,7 @@ async function renderTask(task, token) {
   if (!state.controls[task.id]) {
     state.controls[task.id] = {
       focus: task.outputs[0]?.key || "",
+      layout: "single",
     };
   }
 
@@ -423,10 +440,11 @@ async function renderTask(task, token) {
   `;
   queryPanel.classList.add("content-section--query");
 
-  if (task.type === "markdown") {
-    renderMarkdownWorkspace(selectedOutput, outputPayloads);
-  } else {
-    renderHtmlWorkspace(selectedOutput, outputPayloads);
+  renderTaskWorkspace(task, selectedOutput, outputPayloads, controls.layout);
+
+  if (state.pendingScrollTaskId === task.id) {
+    state.pendingScrollTaskId = null;
+    scrollToWorkspaceTop();
   }
 }
 
@@ -552,25 +570,28 @@ function renderControls(task) {
 
   controlsPanel.hidden = false;
   controlsPanel.innerHTML = `
-    <div class="model-tabs" role="tablist" aria-label="모델 선택">
-      ${task.outputs
-        .map(
-          (output) => `
-            <button
-              type="button"
-              class="model-tab ${controls.focus === output.key ? "is-active" : ""}"
-              data-task="${task.id}"
-              data-control="focus"
-              data-value="${output.key}"
-              data-model="${output.key}"
-              role="tab"
-              aria-selected="${String(controls.focus === output.key)}"
-            >
-              ${escapeHtml(output.model)}
-            </button>
-          `
-        )
-        .join("")}
+    <div class="controls-row">
+      <div class="model-tabs" role="tablist" aria-label="모델 선택">
+        ${task.outputs
+          .map(
+            (output) => `
+              <button
+                type="button"
+                class="model-tab ${controls.focus === output.key ? "is-active" : ""}"
+                data-task="${task.id}"
+                data-control="focus"
+                data-value="${output.key}"
+                data-model="${output.key}"
+                role="tab"
+                aria-selected="${String(controls.focus === output.key)}"
+              >
+                ${escapeHtml(output.model)}
+              </button>
+            `
+          )
+          .join("")}
+      </div>
+      ${renderCompareToggle(task.id, controls.layout)}
     </div>
   `;
 
@@ -579,44 +600,126 @@ function renderControls(task) {
       const taskId = button.dataset.task;
       const control = button.dataset.control;
       const value = button.dataset.value;
+      state.pendingScrollTaskId = taskId;
+      state.controls[taskId].layout = "single";
       state.controls[taskId][control] = value;
+      render();
+    });
+  });
+
+  controlsPanel.querySelectorAll("[data-task-action='toggle-layout']").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.pendingScrollTaskId = task.id;
+      state.controls[task.id].layout = button.dataset.layout;
       render();
     });
   });
 }
 
-function renderMarkdownWorkspace(selectedOutput, outputPayloads) {
+function renderTaskWorkspace(task, selectedOutput, outputPayloads, layout) {
+  if (task.type === "markdown") {
+    renderMarkdownWorkspace(task, selectedOutput, outputPayloads, layout);
+  } else {
+    renderHtmlWorkspace(task, selectedOutput, outputPayloads, layout);
+  }
+}
+
+function renderMarkdownWorkspace(task, selectedOutput, outputPayloads, layout) {
   const payloadMap = new Map(outputPayloads.map((payload) => [payload.key, payload]));
-  const payload = payloadMap.get(selectedOutput.key);
+  const isCompareAll = layout === "compare-all";
+  const panels = isCompareAll
+    ? outputPayloads
+        .map(
+          (payload) => `
+            <article class="compare-panel compare-panel--${escapeAttribute(payload.key)}">
+              <div class="compare-panel__label">${escapeHtml(payload.model)}</div>
+              <div class="compare-panel__body markdown-body">
+                ${renderMarkdown(payload.content)}
+              </div>
+            </article>
+          `
+        )
+        .join("")
+    : `
+        <article class="compare-panel compare-panel--${escapeAttribute(selectedOutput.key)}">
+          <div class="compare-panel__body markdown-body">
+            ${renderMarkdown(payloadMap.get(selectedOutput.key).content)}
+          </div>
+        </article>
+      `;
 
   workspace.innerHTML = `
-    <section class="workspace-grid" data-columns="1">
-      <article class="compare-panel compare-panel--${escapeAttribute(selectedOutput.key)}">
-        <div class="compare-panel__body markdown-body">
-          ${renderMarkdown(payload.content)}
-        </div>
-      </article>
+    <section class="workspace-grid ${isCompareAll ? "workspace-grid--compare-all" : ""}" data-columns="${isCompareAll ? "3" : "1"}" data-layout="${escapeAttribute(layout)}">
+      ${panels}
     </section>
   `;
 }
 
-function renderHtmlWorkspace(selectedOutput, outputPayloads) {
+function renderHtmlWorkspace(task, selectedOutput, outputPayloads, layout) {
   const payloadMap = new Map(outputPayloads.map((payload) => [payload.key, payload]));
-  const payload = payloadMap.get(selectedOutput.key);
+  const isCompareAll = layout === "compare-all";
+  const panels = isCompareAll
+    ? outputPayloads
+        .map(
+          (payload) => `
+            <article class="compare-panel compare-panel--${escapeAttribute(payload.key)}">
+              <div class="compare-panel__label">${escapeHtml(payload.model)}</div>
+              <div class="compare-panel__body compare-panel__body--html">
+                <iframe class="preview-frame" src="${buildPreviewSrc(payload.path)}" title="${escapeHtml(payload.model)} preview"></iframe>
+              </div>
+            </article>
+          `
+        )
+        .join("")
+    : `
+        <article class="compare-panel compare-panel--${escapeAttribute(selectedOutput.key)}">
+          <div class="compare-panel__body compare-panel__body--html">
+            <iframe class="preview-frame" src="${buildPreviewSrc(selectedOutput.path)}" title="${escapeHtml(selectedOutput.model)} preview"></iframe>
+          </div>
+        </article>
+      `;
 
   workspace.innerHTML = `
-    <section class="workspace-grid" data-columns="1">
-      <article class="compare-panel compare-panel--${escapeAttribute(selectedOutput.key)}">
-        <div class="compare-panel__body">
-          <iframe class="preview-frame" src="${encodeURI(selectedOutput.path)}" title="${escapeHtml(selectedOutput.model)} preview"></iframe>
-          <details class="source-disclosure">
-            <summary>HTML 소스 보기</summary>
-            <pre><code>${escapeHtml(payload.content)}</code></pre>
-          </details>
-        </div>
-      </article>
+    <section class="workspace-grid ${isCompareAll ? "workspace-grid--compare-all" : ""}" data-columns="${isCompareAll ? "3" : "1"}" data-layout="${escapeAttribute(layout)}">
+      ${panels}
     </section>
   `;
+}
+
+function buildPreviewSrc(path) {
+  const separator = path.includes("?") ? "&" : "?";
+  return `${encodeURI(path)}${separator}v=${state.renderToken}`;
+}
+
+function renderCompareToggle(taskId, layout) {
+  const label = layout === "compare-all" ? "한 개씩 보기" : "한꺼번에 비교하기";
+  return `
+    <button
+      type="button"
+      class="compare-toggle"
+      data-task-action="toggle-layout"
+      data-task="${taskId}"
+      data-layout="${layout === "compare-all" ? "single" : "compare-all"}"
+    >
+      ${label}
+    </button>
+  `;
+}
+
+function scrollToWorkspaceTop() {
+  const workspaceGrid = workspace.querySelector(".workspace-grid");
+  if (!workspaceGrid) {
+    return;
+  }
+
+  const controlsHeight = controlsPanel.hidden ? 0 : controlsPanel.getBoundingClientRect().height;
+  const topOffset = controlsHeight + 18;
+  const targetTop = window.scrollY + workspaceGrid.getBoundingClientRect().top - topOffset;
+
+  window.scrollTo({
+    top: Math.max(0, targetTop),
+    behavior: "auto",
+  });
 }
 
 async function loadFile(path) {

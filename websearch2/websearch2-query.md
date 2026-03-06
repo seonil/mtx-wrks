@@ -1,0 +1,1 @@
+최근 1년간 주요 Tier-1 업체(예: Bosch, Continental, Denso, Forvia, Visteon, Aptiv, Harman 등)의 인포테인먼트/디지털 콕핏/HMI 전략과 공개 사례를 조사해서 HTML 슬라이드 만들어줘.

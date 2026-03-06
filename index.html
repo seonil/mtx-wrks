@@ -6,7 +6,13 @@
   <title>wrks.ai 비교 아카이브</title>
   <meta name="description" content="wrks.ai 모델 비교 결과를 과제별로 탐색하고 Markdown/HTML 산출물을 나란히 비교할 수 있는 정적 아카이브입니다.">
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    (function () {
+      const isLocalhost = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const assetSuffix = isLocalhost ? "?v=" + Date.now() : "";
+      document.write('<link rel="stylesheet" href="assets/styles.css' + assetSuffix + '">');
+    }());
+  </script>
 </head>
 <body>
   <div class="app-shell">
@@ -46,6 +52,12 @@
     </div>
   </template>
 
-  <script src="assets/app.js" defer></script>
+  <script>
+    (function () {
+      const isLocalhost = location.hostname === "127.0.0.1" || location.hostname === "localhost";
+      const assetSuffix = isLocalhost ? "?v=" + Date.now() : "";
+      document.write('<script src="assets/app.js' + assetSuffix + '" defer><\/script>');
+    }());
+  </script>
 </body>
 </html>
