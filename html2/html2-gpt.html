@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>사내 AI 뉴스레터 소개 | MTX</title>
+  <style>
+    :root{
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #0b5fff;
+      --primary-weak: rgba(11, 95, 255, 0.12);
+      --shadow: 0 10px 25px rgba(17, 24, 39, 0.08);
+      --radius: 14px;
+      --max: 1040px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% -10%, rgba(11, 95, 255, 0.10), transparent 55%),
+        radial-gradient(900px 500px at 90% 10%, rgba(14, 165, 233, 0.10), transparent 60%),
+        var(--bg);
+      line-height: 1.55;
+    }
+
+    a{ color: inherit; }
+    .container{
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(246, 248, 251, 0.78);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+    }
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 260px;
+    }
+    .logo{
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background:
+        linear-gradient(135deg, var(--primary), #22c1ff);
+      box-shadow: 0 8px 18px rgba(11, 95, 255, 0.18);
+      border: 1px solid rgba(255,255,255,0.55);
+    }
+    .brand h1{
+      font-size: 15px;
+      margin: 0;
+      letter-spacing: -0.2px;
+      font-weight: 700;
+    }
+    .brand p{
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    nav[aria-label="페이지 섹션"] ul{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    nav a{
+      text-decoration: none;
+      font-size: 13px;
+      color: #1f2937;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    nav a:hover{
+      border-color: var(--border);
+      background: #fff;
+    }
+
+    /* Main layout */
+    main{
+      padding: 34px 0 44px;
+    }
+    .hero{
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      align-items: stretch;
+      margin-top: 10px;
+    }
+    .card{
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero .intro-card{
+      padding: 26px 26px 22px;
+    }
+    .kicker{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--primary-weak);
+      color: #0a3ea8;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: -0.2px;
+    }
+    .kicker::before{
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--primary);
+      box-shadow: 0 0 0 3px rgba(11, 95, 255, 0.16);
+    }
+    .hero h2{
+      margin: 12px 0 8px;
+      font-size: 28px;
+      letter-spacing: -0.6px;
+      line-height: 1.2;
+    }
+    .hero p{
+      margin: 0;
+      color: #374151;
+      font-size: 15px;
+      max-width: 70ch;
+    }
+    .meta{
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .meta strong{
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    .aside-card{
+      padding: 18px;
+      display: grid;
+      gap: 10px;
+    }
+    .aside-card h3{
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: -0.2px;
+    }
+    .aside-card ul{
+      margin: 0;
+      padding-left: 18px;
+      color: #374151;
+      font-size: 13px;
+    }
+    .aside-card li{
+      margin: 6px 0;
+    }
+    .pill-row{
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .pill{
+      font-size: 12px;
+      color: #374151;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    /* Sections */
+    section{
+      margin-top: 22px;
+    }
+    .section-head{
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .section-head h3{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+    }
+    .section-head p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Content cards */
+    .grid-3{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    article{
+      padding: 18px 18px 16px;
+    }
+    article header{
+      position: static;
+      background: transparent;
+      backdrop-filter: none;
+      border: 0;
+      padding: 0;
+    }
+    .tag{
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #0a3ea8;
+      background: var(--primary-weak);
+      border: 1px solid rgba(11, 95, 255, 0.18);
+      padding: 5px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    article h4{
+      margin: 0 0 6px;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+      line-height: 1.3;
+    }
+    article p{
+      margin: 0 0 12px;
+      color: #374151;
+      font-size: 13.5px;
+    }
+    dl{
+      margin: 0;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px 10px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      color: #374151;
+      font-size: 12.5px;
+    }
+    dt{
+      color: var(--muted);
+      font-weight: 700;
+    }
+    dd{
+      margin: 0;
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--border);
+      padding: 18px 0 26px;
+      color: var(--muted);
+      font-size: 12.5px;
+      background: rgba(255,255,255,0.45);
+    }
+    .footer-inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .footer-inner a{
+      color: #374151;
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(55, 65, 81, 0.35);
+    }
+    .footer-inner a:hover{
+      border-bottom-style: solid;
+    }
+
+    /* Accessibility / utilities */
+    .skip-link{
+      position: absolute;
+      left: -9999px;
+      top: 10px;
+      background: #fff;
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      color: #111827;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .skip-link:focus{
+      left: 16px;
+      z-index: 999;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero{
+        grid-template-columns: 1fr;
+      }
+      .brand{
+        min-width: unset;
+      }
+    }
+    @media (max-width: 860px){
+      .grid-3{
+        grid-template-columns: 1fr;
+      }
+      nav[aria-label="페이지 섹션"] ul{
+        justify-content: flex-start;
+      }
+    }
+
+    @media print{
+      header{ position: static; }
+      .card{ box-shadow: none; }
+      body{ background: #fff; }
+      nav{ display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#content">본문으로 바로가기</a>
+
+  <header>
+    <div class="container header-inner">
+      <div class="brand" aria-label="브랜드">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>사내 AI 뉴스레터</h1>
+          <p>MTX · 생산/품질/연구/구매 전사 공유</p>
+        </div>
+      </div>
+
+      <nav aria-label="페이지 섹션">
+        <ul>
+          <li><a href="#intro">소개</a></li>
+          <li><a href="#highlights">이번 달 주요 콘텐츠</a></li>
+          <li><a href="#footer">문의</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" class="container" role="main">
+    <section class="hero" aria-label="소개 요약">
+      <div class="card intro-card" id="intro">
+        <span class="kicker">업무에 바로 쓰는 AI 인사이트</span>
+        <h2>현장에 적용 가능한 AI 활용 사례와<br />전장 트렌드를 한 번에</h2>
+        <p>
+          본 뉴스레터는 <strong>자동차 전장부품 개발·생산 환경</strong>에 맞춘 AI 소식과 실무 적용 팁을 월 1회로 정리합니다.
+          품질 이슈 대응, 공정 효율화, 문서 자동화, 데이터 분석 등 <strong>부서별로 바로 가져다 쓸 수 있는</strong> 내용을
+          짧고 명확하게 제공합니다.
+        </p>
+
+        <div class="meta" aria-label="운영 정보">
+          <div><strong>발행 주기</strong> · 매월 1회</div>
+          <div><strong>형식</strong> · 5분 리딩</div>
+          <div><strong>대상</strong> · 전 임직원</div>
+          <div><strong>범위</strong> · 사내 적용 사례 + 외부 기술 동향</div>
+        </div>
+      </div>
+
+      <aside class="card aside-card" aria-label="이런 분께 추천">
+        <h3>이런 분께 추천합니다</h3>
+        <ul>
+          <li>문서 작성(보고서/회의록/메일) 시간을 줄이고 싶은 분</li>
+          <li>품질 데이터(불량, 클레임, 검사) 분석의 힌트를 찾는 분</li>
+          <li>공정·설비 데이터 기반 개선 아이디어가 필요한 분</li>
+          <li>AI 도입 시 보안·규정·가이드가 궁금한 분</li>
+        </ul>
+        <div class="pill-row" aria-label="키워드">
+          <span class="pill">생산성</span>
+          <span class="pill">품질</span>
+          <span class="pill">R&amp;D</span>
+          <span class="pill">데이터</span>
+          <span class="pill">보안</span>
+        </div>
+      </aside>
+    </section>
+
+    <section id="highlights" aria-label="이번 달 주요 콘텐츠">
+      <div class="section-head">
+        <h3>이번 달 주요 콘텐츠 3개</h3>
+        <p>현업 적용 중심 · 짧게 읽고 바로 실행</p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card" aria-label="콘텐츠 1: 품질 분석">
+          <header>
+            <span class="tag">QUALITY</span>
+            <h4>불량/클레임 원인 분석: “가설 정리 → 데이터 확인” 워크플로우</h4>
+          </header>
+          <p>
+            현장 이슈를 AI로 “정리된 질문”으로 바꾸는 방법을 소개합니다.
+            불량 현상 요약, 영향 공정 식별, 추가 확인 데이터 리스트업까지
+            표준 템플릿으로 빠르게 진행합니다.
+          </p>
+          <dl>
+            <dt>핵심</dt><dd>문제 정의(현상/범위/조건) 표준화</dd>
+            <dt>산출물</dt><dd>가설 목록 + 확인 데이터 체크리스트</dd>
+            <dt>적용부서</dt><dd>품질보증, 생산기술, 협력사 관리</dd>
+          </dl>
+        </article>
+
+        <article class="card" aria-label="콘텐츠 2: 생산/공정">
+          <header>
+            <span class="tag">MANUFACTURING</span>
+            <h4>공정 개선 아이디어 도출: 라인 데이터로 “낭비 찾기”</h4>
+          </header>
+          <p>
+            설비 로그/사이클타임/작업 표준서에서 개선 포인트를 찾는 방법을 다룹니다.
+            지표 정의, 변동 요인 분해, 실험(시범 적용) 계획까지 단계별로 정리합니다.
+          </p>
+          <dl>
+            <dt>핵심</dt><dd>변동 원인(사람/설비/자재/방법) 분리</dd>
+            <dt>산출물</dt><dd>개선 가설 + 검증 계획(측정/기간/기대효과)</dd>
+            <dt>적용부서</dt><dd>생산, 공정, 설비, IE</dd>
+          </dl>
+        </article>
+
+        <article class="card" aria-label="콘텐츠 3: 사무자동화/보안">
+          <header>
+            <span class="tag">OFFICE &amp; SECURITY</span>
+            <h4>회의록·보고서 자동화: 보안 기준을 지키며 생산성 올리기</h4>
+          </header>
+          <p>
+            사내 가이드에 맞춘 입력 원칙(민감정보 제외, 고객정보 마스킹 등)과 함께
+            회의록 요약/액션아이템 정리/보고서 초안 작성 템플릿을 제공합니다.
+          </p>
+          <dl>
+            <dt>핵심</dt><dd>입력 데이터 최소화 + 결과물 검증 루틴</dd>
+            <dt>산출물</dt><dd>회의록 템플릿 + 보고서 초안 구조</dd>
+            <dt>적용부서</dt><dd>전 부서(기획, 구매, 영업, R&amp;D 포함)</dd>
+          </dl>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" role="contentinfo">
+    <div class="container footer-inner">
+      <div>
+        <strong style="color:#111827;">사내 AI 뉴스레터</strong><br />
+        <span>발행: DX/AI 추진팀 · 문의: </span>
+        <a href="mailto:ai-newsletter@company.example">ai-newsletter@company.example</a>
+        <span> · 내선 1234</span>
+      </div>
+      <div>
+        <span>© </span>
+        <span>MTX</span>
+        <span> · Internal Use Only</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

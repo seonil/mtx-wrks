@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Pulse — 사내 AI 뉴스레터</title>
+  <style>
+    /* ===== Reset & Base ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Pretendard', 'Segoe UI', 'Apple SD Gothic Neo', sans-serif;
+      color: #1e293b;
+      background: #f1f5f9;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Layout Utility ===== */
+    .inner { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== Header ===== */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+      color: #ffffff;
+      padding: 56px 24px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60%; left: -20%;
+      width: 140%; height: 220%;
+      background: radial-gradient(ellipse at 30% 50%, rgba(56,189,248,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(99,102,241,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    header .logo-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 40px;
+      padding: 6px 20px;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+    header h1 {
+      font-size: 2.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      position: relative;
+    }
+    header h1 span { color: #38bdf8; }
+    header .edition {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+    }
+    .header-divider {
+      width: 48px; height: 3px;
+      background: #38bdf8;
+      border-radius: 2px;
+      margin: 20px auto 0;
+    }
+
+    /* ===== Section Common ===== */
+    section { padding: 56px 24px; }
+    .section-label {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #6366f1;
+      background: #eef2ff;
+      border-radius: 4px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
+
+    /* ===== Intro Section ===== */
+    .intro { background: #ffffff; }
+    .intro-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .intro-text p {
+      color: #475569;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .intro-text p:last-child { margin-bottom: 0; }
+    .intro-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .stat-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .stat-card .number {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #6366f1;
+      line-height: 1.2;
+    }
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* ===== Contents Section ===== */
+    .contents { background: #f1f5f9; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease;
+    }
+    .card:hover { box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .card-thumb {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.2rem;
+      position: relative;
+    }
+    .card-thumb.theme-blue   { background: linear-gradient(135deg, #dbeafe, #eff6ff); }
+    .card-thumb.theme-violet { background: linear-gradient(135deg, #ede9fe, #f5f3ff); }
+    .card-thumb.theme-teal   { background: linear-gradient(135deg, #ccfbf1, #f0fdfa); }
+    .card-body {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .card-tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .card-tag.blue   { color: #2563eb; }
+    .card-tag.violet { color: #7c3aed; }
+    .card-tag.teal   { color: #0d9488; }
+    .card-body h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+    .card-body p {
+      font-size: 0.88rem;
+      color: #64748b;
+      flex: 1;
+      line-height: 1.7;
+    }
+    .card-meta {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .read-more {
+      color: #6366f1;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 0.82rem;
+    }
+    .read-more:hover { text-decoration: underline; }
+
+    /* ===== CTA Banner ===== */
+    .cta-banner {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+      color: #fff;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .cta-banner h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .cta-banner p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: #38bdf8;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 32px;
+      border-radius: 8px;
+      text-decoration: none;
+      letter-spacing: 0.01em;
+    }
+    .cta-btn:hover { background: #7dd3fc; }
+
+    /* ===== Footer ===== */
+    footer {
+      background: #0f172a;
+      color: rgba(255,255,255,0.45);
+      padding: 36px 24px;
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: 1.8;
+    }
+    footer strong { color: rgba(255,255,255,0.7); }
+    footer .footer-links { margin-top: 8px; }
+    footer .footer-links a {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer .footer-links a:hover { color: #38bdf8; }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+      header h1 { font-size: 1.8rem; }
+      .intro-grid { grid-template-columns: 1fr; gap: 32px; }
+      .card-grid { grid-template-columns: 1fr; }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header>
+    <div class="inner">
+      <div class="logo-badge">🏭 모빌텍 전장사업부</div>
+      <h1><span>AI</span> Pulse</h1>
+      <p class="edition">Vol.12 · 2026년 3월호</p>
+      <div class="header-divider"></div>
+    </div>
+  </header>
+
+  <!-- ========== MAIN ========== -->
+  <main>
+
+    <!-- ── Intro ── -->
+    <section class="intro">
+      <div class="inner intro-grid">
+        <div class="intro-text">
+          <span class="section-label">About Newsletter</span>
+          <h2 class="section-title">AI가 바꾸는 전장의 미래,<br>매달 한눈에 읽다.</h2>
+          <p>
+            <strong>AI Pulse</strong>는 자동차 전장부품 분야에 특화된 사내 AI 뉴스레터입니다.
+            ADAS·차량 전자제어·스마트 팩토리 등 우리 사업과 직결되는 AI 트렌드를
+            매월 큐레이션하여 전달합니다.
+          </p>
+          <p>
+            기술연구소·생산기술팀·품질혁신팀 등 각 부서 AI 실무자가 직접 기고하며,
+            현장에 바로 적용할 수 있는 인사이트를 목표로 합니다.
+          </p>
+        </div>
+        <div class="intro-stats">
+          <div class="stat-card">
+            <div class="number">12</div>
+            <div class="label">발행 호수</div>
+          </div>
+          <div class="stat-card">
+            <div class="number">1,240+</div>
+            <div class="label">사내 구독자</div>
+          </div>
+          <div class="stat-card">
+            <div class="number">87%</div>
+            <div class="label">열독률</div>
+          </div>
+          <div class="stat-card">
+            <div class="number">36건</div>
+            <div class="label">현장 적용 사례</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── This Month's Contents ── -->
+    <section class="contents">
+      <div class="inner">
+        <span class="section-label">March 2026</span>
+        <h2 class="section-title">이번 달 주요 콘텐츠</h2>
+
+        <div class="card-grid">
+
+          <!-- Card 1 -->
+          <article class="card">
+            <div class="card-thumb theme-blue">🤖</div>
+            <div class="card-body">
+              <span class="card-tag blue">AI · ADAS</span>
+              <h3>비전 트랜스포머 기반 ADAS 인지 모델, 양산 적용 로드맵</h3>
+              <p>
+                기존 CNN 대비 인식 정확도 12% 향상을 달성한 ViT 기반 객체 검출 모델의
+                ECU 탑재 전략과 양산 일정 로드맵을 공유합니다.
+              </p>
+              <div class="card-meta">
+                <span>기술연구소 · 김도현</span>
+                <a href="#" class="read-more">자세히 보기 →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="card">
+            <div class="card-thumb theme-violet">🏭</div>
+            <div class="card-body">
+              <span class="card-tag violet">Smart Factory</span>
+              <h3>생성형 AI 기반 PCB 납땜 불량 자동 분류 시스템 도입기</h3>
+              <p>
+                화성 2공장 SMT 라인에 도입된 멀티모달 AI 검사 시스템의 1개월 운영 결과 —
+                오탈율 63% 감소, 일일 리젝트 재검 시간 4시간 단축 성과를 정리합니다.
+              </p>
+              <div class="card-meta">
+                <span>생산기술팀 · 이서윤</span>
+                <a href="#" class="read-more">자세히 보기 →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="card">
+            <div class="card-thumb theme-teal">📊</div>
+            <div class="card-body">
+              <span class="card-tag teal">Industry Insight</span>
+              <h3>글로벌 OEM의 차량용 AI 반도체 내재화 전략 분석</h3>
+              <p>
+                Toyota·VW·Hyundai 등 주요 OEM이 자체 AI 칩을 개발하는 흐름 속에서,
+                Tier-1 전장 업체로서 우리의 대응 전략과 기회를 분석합니다.
+              </p>
+              <div class="card-meta">
+                <span>전략기획팀 · 박준혁</span>
+                <a href="#" class="read-more">자세히 보기 →</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="cta-banner">
+      <div class="inner">
+        <h2>다음 호에 기고하고 싶으신가요?</h2>
+        <p>AI 관련 프로젝트 경험, 기술 리뷰, 업계 동향 분석 등 어떤 주제든 환영합니다.</p>
+        <a href="mailto:ai-pulse@mobiletec.co.kr" class="cta-btn">기고 문의하기</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer>
+    <div class="inner">
+      <p><strong>AI Pulse</strong> — 모빌텍 전장사업부 AI 뉴스레터</p>
+      <p>발행: DX추진팀 · 매월 첫째 주 금요일 발행 · 사내 전용</p>
+      <div class="footer-links">
+        <a href="#">지난 호 보기</a>
+        <a href="#">구독 신청</a>
+        <a href="#">수신 거부</a>
+      </div>
+      <p style="margin-top: 12px;">© 2026 Mobiletec Co., Ltd. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

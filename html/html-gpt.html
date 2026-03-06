@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>전장부품 프로젝트 현황 대시보드</title>
+  <style>
+    :root{
+      /* B2B SaaS 느낌의 절제된 다크 테마 */
+      --bg0:#0b1220;
+      --bg1:#0f1930;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --border: rgba(255,255,255,.10);
+
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.66);
+
+      --primary:#5aa7ff;
+      --ok:#35d07f;
+      --warn:#ffb020;
+      --bad:#ff5a6a;
+
+      --radius:14px;
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --shadowSoft: 0 10px 28px rgba(0,0,0,.25);
+
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR",
+              "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 15% 5%, rgba(90,167,255,.16), transparent 60%),
+        radial-gradient(900px 500px at 90% 0%, rgba(53,208,127,.10), transparent 55%),
+        linear-gradient(180deg, #070c16, var(--bg0) 50%, #070c16);
+      background-attachment: fixed;
+    }
+
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+      padding:24px 16px 56px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      gap:14px;
+      align-items:flex-start;
+      margin-bottom:14px;
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:18px;
+      font-weight:720;
+      letter-spacing:-.2px;
+    }
+    .subtitle{
+      margin:0;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.45;
+    }
+
+    .toolbar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:999px;
+      box-shadow:var(--shadowSoft);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:8px; height:8px; border-radius:50%;
+      background:var(--primary);
+      box-shadow: 0 0 0 4px rgba(90,167,255,.16);
+      flex:0 0 auto;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid var(--border);
+      background:var(--card);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:12px;
+      cursor:pointer;
+      transition: background .18s ease, transform .08s ease, border-color .18s ease;
+    }
+    .btn:hover{ background:var(--card2); border-color:rgba(255,255,255,.16); }
+    .btn:active{ transform:translateY(1px); }
+    .btn.secondary{ color:var(--muted); }
+
+    /* KPI cards: 데스크탑 4열, 모바일 1열 */
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap:12px;
+      margin:14px 0 16px;
+    }
+    .card{
+      position:relative;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadowSoft);
+      padding:14px 14px 12px;
+      min-height:110px;
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-2px -2px auto auto;
+      width:120px; height:120px;
+      background: radial-gradient(circle at 30% 30%, rgba(90,167,255,.16), transparent 62%);
+      pointer-events:none;
+    }
+    .cardhead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .label{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:650;
+      letter-spacing:.2px;
+    }
+    .metric{
+      margin:0;
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+    }
+    .value{
+      font-size:28px;
+      font-weight:760;
+      letter-spacing:-.4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .unit{
+      color:var(--muted);
+      font-size:12px;
+      font-weight:650;
+    }
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin:10px 0;
+    }
+    .list{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:7px;
+    }
+    .list li{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .bullet{
+      width:8px; height:8px;
+      border-radius:3px;
+      background: rgba(255,255,255,.18);
+      margin-top:4px;
+      flex:0 0 auto;
+    }
+
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 9px;
+      border-radius:999px;
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--muted);
+      font-size:11px;
+      white-space:nowrap;
+    }
+    .chip strong{ color:var(--text); font-weight:700; }
+
+    .status{
+      --c: rgba(255,255,255,.45);
+      color:var(--text);
+    }
+    .status::before{
+      content:"";
+      width:8px; height:8px;
+      border-radius:50%;
+      background:var(--c);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 22%, transparent);
+      display:inline-block;
+    }
+    .status.ok{ --c: var(--ok); }
+    .status.warn{ --c: var(--warn); }
+    .status.bad{ --c: var(--bad); }
+    .status.neutral{ --c: rgba(255,255,255,.45); }
+
+    /* Table panel */
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panelhead{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      padding:14px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .panelhead h2{
+      margin:0;
+      font-size:14px;
+      font-weight:760;
+      letter-spacing:-.1px;
+    }
+    .hint{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+    .filters{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+    .search{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 10px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:10px;
+      background: rgba(0,0,0,.18);
+      min-width:240px;
+      color:var(--muted);
+    }
+    .search input{
+      width:100%;
+      border:0;
+      outline:0;
+      background:transparent;
+      color:var(--text);
+      font-size:12px;
+    }
+    .search input::placeholder{ color: rgba(255,255,255,.45); }
+
+    .tablewrap{ overflow:auto; }
+    table{
+      width:100%;
+      border-collapse:separate;
+      border-spacing:0;
+      min-width:900px; /* 가독성 확보 */
+    }
+    thead th{
+      text-align:left;
+      padding:12px 14px;
+      font-size:11px;
+      color:var(--muted);
+      font-weight:700;
+      letter-spacing:.35px;
+      text-transform:uppercase;
+      background: rgba(255,255,255,.04);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      position:sticky;
+      top:0;
+      z-index:1;
+      backdrop-filter: blur(8px);
+    }
+    tbody td{
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:12px;
+      color: rgba(255,255,255,.86);
+      vertical-align:top;
+    }
+    tbody tr:hover td{ background: rgba(255,255,255,.03); }
+    .muted{ color:var(--muted); }
+    .mono{ font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+
+    .prio{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      font-size:11px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .prio::before{
+      content:"";
+      width:10px; height:10px;
+      border-radius:4px;
+      background: rgba(255,255,255,.25);
+      display:inline-block;
+    }
+    .prio.p1{ color: rgba(255,255,255,.92); }
+    .prio.p1::before{ background: var(--bad); }
+    .prio.p2::before{ background: var(--warn); }
+    .prio.p3::before{ background: rgba(255,255,255,.35); }
+
+    .footerbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px 12px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* Responsive breakpoints */
+    @media (max-width: 980px){
+      .cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .search{ min-width:200px; }
+    }
+    @media (max-width: 640px){
+      header{ flex-direction:column; align-items:stretch; }
+      .toolbar{ justify-content:flex-start; }
+      .cards{ grid-template-columns: 1fr; } /* 모바일 1열 */
+      .search{ min-width:100%; }
+      .badge{ width:100%; justify-content:space-between; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>전장부품 내부 프로젝트 현황</h1>
+        <p class="subtitle">프로젝트/이슈/리스크 요약과 이번 주 일정, 최근 액션 아이템을 한 화면에서 확인합니다.</p>
+      </div>
+
+      <div class="toolbar">
+        <div class="badge" title="마지막 갱신 시각">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Last updated: <span id="lastUpdated" class="mono"></span></span>
+        </div>
+        <button class="btn secondary" id="btnReset">필터 초기화</button>
+        <button class="btn" id="btnRefresh">새로고침</button>
+      </div>
+    </header>
+
+    <!-- KPI Cards (4개) -->
+    <section class="cards" aria-label="요약 카드">
+      <article class="card" aria-label="진행 중 프로젝트 수">
+        <div class="cardhead">
+          <div class="label">진행 중 프로젝트 수</div>
+          <span class="chip"><strong id="projDelta">+0</strong> WoW</span>
+        </div>
+        <p class="metric">
+          <span id="kpiProjects" class="value mono">0</span>
+          <span class="unit">건</span>
+        </p>
+        <p class="sub">양산/개발/선행 포함. 종료 프로젝트는 제외됩니다.</p>
+      </article>
+
+      <article class="card" aria-label="주요 이슈 수">
+        <div class="cardhead">
+          <div class="label">주요 이슈 수</div>
+          <span class="chip status warn">주의</span>
+        </div>
+        <p class="metric">
+          <span id="kpiIssues" class="value mono">0</span>
+          <span class="unit">건</span>
+        </p>
+        <div class="divider"></div>
+        <ul class="list" id="issuesTop"></ul>
+      </article>
+
+      <article class="card" aria-label="이번 주 일정">
+        <div class="cardhead">
+          <div class="label">이번 주 일정</div>
+          <span class="chip"><strong id="weekRange" class="mono">-</strong></span>
+        </div>
+        <ul class="list" id="weekSchedule"></ul>
+        <p class="sub">정기회의/게이트/시험/고객 대응 일정을 요약합니다.</p>
+      </article>
+
+      <article class="card" aria-label="위험 항목 수">
+        <div class="cardhead">
+          <div class="label">위험 항목 수</div>
+          <span class="chip status bad">모니터링</span>
+        </div>
+        <p class="metric">
+          <span id="kpiRisks" class="value mono">0</span>
+          <span class="unit">건</span>
+        </p>
+        <div class="divider"></div>
+        <ul class="list" id="riskSummary"></ul>
+      </article>
+    </section>
+
+    <!-- Action Items Table -->
+    <section class="panel" aria-label="최근 액션 아이템">
+      <div class="panelhead">
+        <div>
+          <h2>최근 액션 아이템</h2>
+          <p class="hint">검색: 프로젝트/내용/담당자. 정렬: 기한 또는 우선순위.</p>
+        </div>
+        <div class="filters">
+          <label class="search" aria-label="검색">
+            <span aria-hidden="true">⌕</span>
+            <input id="searchBox" type="text" placeholder="검색 (프로젝트, 액션, 담당자)" />
+          </label>
+          <button class="btn secondary" id="btnSortDue">기한순</button>
+          <button class="btn secondary" id="btnSortPrio">우선순위순</button>
+        </div>
+      </div>
+
+      <div class="tablewrap">
+        <table aria-label="액션 아이템 테이블">
+          <thead>
+            <tr>
+              <th style="width:110px;">ID</th>
+              <th style="width:180px;">프로젝트</th>
+              <th>액션</th>
+              <th style="width:140px;">담당</th>
+              <th style="width:130px;">기한</th>
+              <th style="width:130px;">우선순위</th>
+              <th style="width:140px;">상태</th>
+            </tr>
+          </thead>
+          <tbody id="actionTbody"></tbody>
+        </table>
+      </div>
+
+      <div class="footerbar">
+        <div>표시 중: <span id="rowsCount" class="mono">0</span>건</div>
+        <div class="muted">데이터는 하단 <span class="mono">data</span> 객체만 수정하면 됩니다.</div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ===== 데이터(샘플): 회사/프로젝트 실데이터로 교체해서 사용 =====
+    const data = {
+      kpis: {
+        projectsInProgress: 12,
+        projectsDeltaWoW: +1,
+        majorIssues: 7,
+        risks: 4
+      },
+      topIssues: [
+        { title: "EMC 재시험 일정 지연 가능성", tag: "시험" },
+        { title: "MCU 리드타임 변동(대체 소싱 검토)", tag: "구매" },
+        { title: "고객 SW 요구사항 변경 영향 분석 필요", tag: "고객" }
+      ],
+      weekSchedule: [
+        { day: "화", title: "A-SPICE 프로세스 점검 미팅", owner: "품질/PMO" },
+        { day: "수", title: "열충격(TC) 1차 결과 리뷰", owner: "시험" },
+        { day: "금", title: "고객 주간 정례(이슈/리스크 공유)", owner: "PM" }
+      ],
+      riskBreakdown: [
+        { title: "원가", detail: "메모리 단가 상승 영향", severity: "warn" },
+        { title: "일정", detail: "인증 샘플 납기 타이트", severity: "bad" },
+        { title: "품질", detail: "필드 리턴 원인 미확정", severity: "bad" }
+      ],
+      actionItems: [
+        { id:"AI-2409", project:"IVI-Gen3", action:"EMC 재시험 예약 확정 및 샘플 출하 계획 업데이트", owner:"김OO", due:"2026-03-10", priority:"P1", status:"In Progress" },
+        { id:"AI-2411", project:"ADAS-Cam", action:"고객 변경요구 CR-18 영향(일정/원가) 분석 보고", owner:"이OO", due:"2026-03-08", priority:"P1", status:"Open" },
+        { id:"AI-2415", project:"BMS-Next", action:"대체 소싱 후보 2곳 샘플/견적 수령 및 비교표 작성", owner:"박OO", due:"2026-03-13", priority:"P2", status:"In Progress" },
+        { id:"AI-2418", project:"IVI-Gen3", action:"TC 1차 결과 기반 설계 보완 항목 정리(소자/방열)", owner:"정OO", due:"2026-03-07", priority:"P2", status:"Open" },
+        { id:"AI-2420", project:"EPS-Ctrl", action:"필드 리턴 3건 원인분석(FA) 중간결과 공유", owner:"최OO", due:"2026-03-12", priority:"P1", status:"Blocked" },
+        { id:"AI-2423", project:"BMS-Next", action:"A-SPICE 체크리스트 갭 클로징(문서/형상관리)", owner:"윤OO", due:"2026-03-15", priority:"P3", status:"Open" }
+      ]
+    };
+
+    // ===== 유틸 =====
+    const $ = (s) => document.querySelector(s);
+    const escapeHtml = (s) => String(s)
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+
+    const pad2 = (n) => String(n).padStart(2,"0");
+    function fmtDateTime(d=new Date()){
+      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+    }
+    function mondayOfWeek(date){
+      const d = new Date(date);
+      const day = d.getDay(); // 0..6 (Sun..Sat)
+      const diff = (day === 0 ? -6 : 1 - day); // Monday 기준
+      d.setDate(d.getDate() + diff);
+      d.setHours(0,0,0,0);
+      return d;
+    }
+    function addDays(date, days){
+      const d = new Date(date);
+      d.setDate(d.getDate() + days);
+      return d;
+    }
+    function fmtYMD(d){
+      return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+    }
+    function prioRank(p){ return ({P1:1,P2:2,P3:3}[p] ?? 9); }
+    function statusClass(status){
+      const s = String(status).toLowerCase();
+      if (s.includes("block")) return "bad";
+      if (s.includes("progress")) return "warn";
+      if (s.includes("done") || s.includes("closed")) return "ok";
+      return "neutral";
+    }
+
+    // ===== 상태 =====
+    const view = { query:"", sort:"due" }; // due | prio
+
+    // ===== 렌더 =====
+    function renderKpis(){
+      $("#kpiProjects").textContent = data.kpis.projectsInProgress;
+      $("#projDelta").textContent = `${data.kpis.projectsDeltaWoW >= 0 ? "+" : ""}${data.kpis.projectsDeltaWoW}`;
+      $("#kpiIssues").textContent = data.kpis.majorIssues;
+      $("#kpiRisks").textContent = data.kpis.risks;
+
+      const issues = (data.topIssues || []).slice(0,3).map(it => `
+        <li>
+          <span class="bullet" aria-hidden="true"></span>
+          <span><span class="muted">[${escapeHtml(it.tag)}]</span> ${escapeHtml(it.title)}</span>
+        </li>
+      `).join("");
+      $("#issuesTop").innerHTML = issues || `
+        <li><span class="bullet" aria-hidden="true"></span><span>등록된 주요 이슈가 없습니다.</span></li>
+      `;
+
+      const mon = mondayOfWeek(new Date());
+      const sun = addDays(mon, 6);
+      $("#weekRange").textContent = `${fmtYMD(mon)} ~ ${fmtYMD(sun)}`;
+
+      const schedule = (data.weekSchedule || []).slice(0,4).map(it => `
+        <li>
+          <span class="bullet" aria-hidden="true"></span>
+          <span><span class="muted">${escapeHtml(it.day)}</span> · ${escapeHtml(it.title)} <span class="muted">(${escapeHtml(it.owner)})</span></span>
+        </li>
+      `).join("");
+      $("#weekSchedule").innerHTML = schedule || `
+        <li><span class="bullet" aria-hidden="true"></span><span>이번 주 등록된 일정이 없습니다.</span></li>
+      `;
+
+      const risks = (data.riskBreakdown || []).slice(0,3).map(it => {
+        const c = it.severity === "bad" ? "rgba(255,90,106,.40)"
+                : it.severity === "warn" ? "rgba(255,176,32,.40)"
+                : "rgba(255,255,255,.22)";
+        return `
+          <li>
+            <span class="bullet" aria-hidden="true" style="background:${c}"></span>
+            <span><span class="muted">${escapeHtml(it.title)}:</span> ${escapeHtml(it.detail)}</span>
+          </li>
+        `;
+      }).join("");
+      $("#riskSummary").innerHTML = risks || `
+        <li><span class="bullet" aria-hidden="true"></span><span>등록된 위험 항목이 없습니다.</span></li>
+      `;
+    }
+
+    function getRows(){
+      const q = view.query.trim().toLowerCase();
+      let rows = [...(data.actionItems || [])];
+
+      if (q){
+        rows = rows.filter(r => {
+          const hay = `${r.id} ${r.project} ${r.action} ${r.owner} ${r.status} ${r.priority} ${r.due}`.toLowerCase();
+          return hay.includes(q);
+        });
+      }
+
+      if (view.sort === "prio"){
+        rows.sort((a,b) => prioRank(a.priority) - prioRank(b.priority) || String(a.due).localeCompare(String(b.due)));
+      } else {
+        rows.sort((a,b) => String(a.due).localeCompare(String(b.due)) || prioRank(a.priority) - prioRank(b.priority));
+      }
+      return rows;
+    }
+
+    function renderTable(){
+      const rows = getRows();
+      $("#rowsCount").textContent = rows.length;
+
+      $("#actionTbody").innerHTML = (rows.length ? rows : []).map(r => `
+        <tr>
+          <td class="mono muted">${escapeHtml(r.id)}</td>
+          <td>${escapeHtml(r.project)}</td>
+          <td>${escapeHtml(r.action)}</td>
+          <td>${escapeHtml(r.owner)}</td>
+          <td class="mono">${escapeHtml(r.due)}</td>
+          <td><span class="prio ${escapeHtml(String(r.priority).toLowerCase())}">${escapeHtml(r.priority)}</span></td>
+          <td><span class="chip status ${statusClass(r.status)}">${escapeHtml(r.status)}</span></td>
+        </tr>
+      `).join("") || `
+        <tr><td colspan="7" class="muted">조건에 맞는 액션 아이템이 없습니다.</td></tr>
+      `;
+    }
+
+    function renderAll(){
+      $("#lastUpdated").textContent = fmtDateTime(new Date());
+      renderKpis();
+      renderTable();
+    }
+
+    // ===== 이벤트 =====
+    $("#searchBox").addEventListener("input", (e) => { view.query = e.target.value; renderTable(); });
+    $("#btnSortDue").addEventListener("click", () => { view.sort = "due"; renderTable(); });
+    $("#btnSortPrio").addEventListener("click", () => { view.sort = "prio"; renderTable(); });
+    $("#btnReset").addEventListener("click", () => {
+      view.query = ""; view.sort = "due";
+      $("#searchBox").value = "";
+      renderAll();
+    });
+    $("#btnRefresh").addEventListener("click", renderAll);
+
+    renderAll();
+  </script>
+</body>
+</html>

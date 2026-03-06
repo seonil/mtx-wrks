@@ -1,0 +1,306 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전장부품 프로젝트 대시보드</title>
+    <style>
+        /* Base & Reset */
+        :root {
+            --bg-color: #f3f4f6;
+            --surface-color: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --primary-color: #2563eb;
+            --danger-color: #dc2626;
+            --warning-color: #d97706;
+            --success-color: #059669;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        /* Layout */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            margin-bottom: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .date-display {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Cards Section */
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .card-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .card-value {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-trend {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Table Section */
+        .table-container {
+            background-color: var(--surface-color);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table-header h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f9fafb;
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+        /* Status Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 10px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-progress { background-color: #dbeafe; color: #1d4ed8; }
+        .badge-pending { background-color: #fef3c7; color: #b45309; }
+        .badge-danger { background-color: #fee2e2; color: #b91c1c; }
+        .badge-done { background-color: #d1fae5; color: #047857; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .kpi-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    <header class="header">
+        <h1>AE(전장) 프로젝트 관리 대시보드</h1>
+        <div class="date-display" id="current-date">로딩 중...</div>
+    </header>
+
+    <!-- KPI Cards -->
+    <div class="kpi-cards">
+        <!-- Card 1 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">진행 중 프로젝트</span>
+                <svg class="card-icon" style="color: var(--primary-color)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
+            <div class="card-value">14</div>
+            <div class="card-trend">+2 이번 달 신규 착수</div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">주요 이슈</span>
+                <svg class="card-icon" style="color: var(--warning-color)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </div>
+            <div class="card-value" style="color: var(--warning-color)">8</div>
+            <div class="card-trend">자재 수급 및 설계 변경 관련</div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">이번 주 마일스톤</span>
+                <svg class="card-icon" style="color: var(--success-color)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            </div>
+            <div class="card-value">5</div>
+            <div class="card-trend">샘플 출하 및 고객사 미팅</div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">위험 (Risk) 항목</span>
+                <svg class="card-icon" style="color: var(--danger-color)" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <div class="card-value" style="color: var(--danger-color)">2</div>
+            <div class="card-trend">납기 지연 우려 (집중 관리 요망)</div>
+        </div>
+    </div>
+
+    <!-- Action Items Table -->
+    <div class="table-container">
+        <div class="table-header">
+            <h2>최근 액션 아이템</h2>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>프로젝트명</th>
+                        <th>액션 아이템</th>
+                        <th>담당자</th>
+                        <th>기한</th>
+                        <th>상태</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <!-- JS로 데이터 삽입 -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 상단 오늘 날짜 출력
+    const dateElement = document.getElementById('current-date');
+    const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+    dateElement.textContent = `기준일: ${new Date().toLocaleDateString('ko-KR', options)}`;
+
+    // 전장부품 관련 더미 데이터
+    const actionItems = [
+        { id: 'ACT-2031', project: '차세대 HUD 모듈 개발', task: '렌즈 난반사 이슈 원인 분석 및 보고서 작성', owner: '광학설계팀 김선임', due: '2026-03-08', status: '지연', statusClass: 'badge-danger' },
+        { id: 'ACT-2032', project: '자율주행용 전방 레이더', task: 'B샘플 고객사 인도 전 최종 소프트웨어 플래싱', owner: 'SW개발팀 이책임', due: '2026-03-09', status: '진행 중', statusClass: 'badge-progress' },
+        { id: 'ACT-2033', project: '통합 제어기(DCU) 양산', task: '양산 라인 SMT 불량률 검토 회의', owner: '품질보증팀 박팀장', due: '2026-03-10', status: '대기', statusClass: 'badge-pending' },
+        { id: 'ACT-2034', project: 'EV 배터리 제어 시스템(BMS)', task: 'ASIL-D 안전 규격 인증 서류 1차 제출', owner: '인증팀 최선임', due: '2026-03-07', status: '완료', statusClass: 'badge-done' },
+        { id: 'ACT-2035', project: '인포테인먼트 디스플레이', task: '디스플레이 패널 벤더사(A사) 납기 지연 대책 수립', owner: '구매팀 정과장', due: '2026-03-11', status: '진행 중', statusClass: 'badge-progress' }
+    ];
+
+    // 테이블 데이터 렌더링
+    const tbody = document.getElementById('table-body');
+    
+    actionItems.forEach(item => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><span style="font-family: monospace; color: var(--text-secondary);">${item.id}</span></td>
+            <td style="font-weight: 500;">${item.project}</td>
+            <td>${item.task}</td>
+            <td>${item.owner}</td>
+            <td>${item.due}</td>
+            <td><span class="badge ${item.statusClass}">${item.status}</span></td>
+        `;
+        tbody.appendChild(row);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>wrks.ai 비교 아카이브</title>
+  <meta name="description" content="wrks.ai 모델 비교 결과를 과제별로 탐색하고 Markdown/HTML 산출물을 나란히 비교할 수 있는 정적 아카이브입니다.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="비교 내비게이션">
+      <div class="sidebar__brand">
+        <p class="sidebar__eyebrow">wrks.ai comparison</p>
+        <h1>Wrks.ai 모델 비교</h1>
+      </div>
+
+      <nav id="navTree" class="nav-tree"></nav>
+
+
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p id="breadcrumb" class="topbar__eyebrow">Overview</p>
+          <h2 id="pageTitle">비교 개요</h2>
+        </div>
+      </header>
+
+      <section id="heroPanel" class="hero-panel"></section>
+
+      <section id="queryPanel" class="content-section"></section>
+
+      <section id="controlsPanel" class="controls-panel" hidden></section>
+
+      <section id="workspace" class="workspace"></section>
+    </main>
+  </div>
+
+  <template id="loadingTemplate">
+    <div class="state-block">
+      <p class="state-block__eyebrow">Loading</p>
+      <p>콘텐츠를 불러오는 중입니다.</p>
+    </div>
+  </template>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>
