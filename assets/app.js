@@ -371,12 +371,6 @@ async function renderOverview(token) {
       </article>
 
       <article class="content-section">
-        <div class="content-section__header">
-          <div>
-            <p class="section-label">Structure</p>
-            <h3 class="content-section__title">현재 구성</h3>
-          </div>
-        </div>
         <div class="table-wrap">
           <table class="meta-table">
             <thead>
